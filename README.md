@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="logo.png" width="160" height="160" alt="Nova AI Logo"/>
+
 # Nova AI
 
 ### Privacy-focused Android AI chat client with tool calling, vision & web search

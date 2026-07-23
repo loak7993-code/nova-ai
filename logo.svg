@@ -1,0 +1,51 @@
+<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="256" y2="256" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1A1715"/>
+      <stop offset="1" stop-color="#2B2622"/>
+    </linearGradient>
+    <linearGradient id="star" x1="128" y1="30" x2="128" y2="226" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F5B580"/>
+      <stop offset="0.5" stop-color="#D4915D"/>
+      <stop offset="1" stop-color="#A86A3C"/>
+    </linearGradient>
+    <filter id="softGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <rect width="256" height="256" rx="56" fill="url(#bg)"/>
+
+  <circle cx="128" cy="128" r="76" stroke="#D4915D" stroke-opacity="0.2" stroke-width="1.5"/>
+  <circle cx="128" cy="128" r="60" stroke="#D4915D" stroke-opacity="0.12" stroke-width="1"/>
+
+  <g filter="url(#softGlow)">
+    <path d="M128 30
+             L140 100
+             L128 88
+             L116 100
+             Z
+             M128 30
+             L116 100
+             L108 116
+             L38 128
+             L108 140
+             L116 156
+             L128 226
+             L140 156
+             L148 140
+             L218 128
+             L148 116
+             L140 100
+             Z"
+          fill="url(#star)"/>
+  </g>
+
+  <path d="M128 88 L132 112 L128 104 L124 112 Z" fill="#FFFFFF" opacity="0.95"/>
+
+  <circle cx="128" cy="128" r="5" fill="#FFFFFF" opacity="0.9"/>
+</svg>

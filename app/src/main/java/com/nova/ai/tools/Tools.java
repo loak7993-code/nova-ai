@@ -143,7 +143,7 @@ public class Tools {
 
             String searchUrl = baseUrl + "/search?q="
                     + java.net.URLEncoder.encode(query, "UTF-8").replace("+", "%20")
-                    + "&format=json";
+                    + "&format=json&pageno=1";
             Request searchReq = new Request.Builder()
                     .url(searchUrl)
                     .header("User-Agent", "NovaAI/1.7")
@@ -168,6 +168,8 @@ public class Tools {
             List<String> sources = new ArrayList<>();
             StringBuilder combined = new StringBuilder();
             int fetched = 0;
+            String queryLower = query.toLowerCase();
+
             for (int i = 0; i < resultsArr.size() && fetched < 5; i++) {
                 JsonObject res = resultsArr.get(i).getAsJsonObject();
                 String title = res.has("title") && !res.get("title").isJsonNull() ? res.get("title").getAsString() : "";
@@ -177,6 +179,17 @@ public class Tools {
                 if (content.isEmpty() && title.isEmpty()) continue;
 
                 String domain = extractDomain(url);
+
+                String fullText = (title + " " + content).toLowerCase();
+                String[] queryWords = queryLower.split("\\s+");
+                int matched = 0;
+                for (String w : queryWords) {
+                    if (w.length() > 3 && fullText.contains(w)) matched++;
+                }
+                if (queryWords.length > 2 && matched < Math.max(1, queryWords.length / 3)) continue;
+
+                if (isJunkResult(domain, title, content)) continue;
+
                 if (!domain.isEmpty()) sources.add(domain);
 
                 if (combined.length() > 0) combined.append("\n\n");
@@ -206,6 +219,27 @@ public class Tools {
         } catch (Exception e) {
             return "";
         }
+    }
+
+    private static boolean isJunkResult(String domain, String title, String content) {
+        String lowerTitle = title.toLowerCase();
+        String lowerContent = content.toLowerCase();
+        String lowerDomain = domain.toLowerCase();
+
+        if (lowerDomain.contains("cambridge.org") && lowerTitle.contains("dictionary")) return true;
+        if (lowerDomain.contains("merriam-webster.com") && (lowerTitle.contains("dictionary") || lowerTitle.contains("definition"))) return true;
+        if (lowerDomain.contains("leangrammar.com")) return true;
+        if (lowerTitle.contains("calendar") && lowerTitle.matches(".*(\\d{4}).*calendar.*")) return true;
+        if (lowerDomain.contains("timeanddate.com") && lowerTitle.contains("calendar")) return true;
+        if (lowerDomain.contains("calendardate.com")) return true;
+        if (lowerTitle.matches("^\\d{4}$")) return true;
+        if (lowerDomain.contains("youtube.com") && !lowerTitle.contains("final") && !lowerTitle.contains("winner")) return true;
+
+        if (lowerTitle.contains("meaning") && (lowerTitle.contains("english") || lowerTitle.contains("definition"))) {
+            if (!lowerContent.contains("world cup") && !lowerContent.contains("football") && !lowerContent.contains("soccer")) return true;
+        }
+
+        return false;
     }
 
     private static double evalMath(String expr) {
