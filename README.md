@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="banner.png" width="800" alt="Nova AI Banner"/>
+
 <img src="logo.png" width="160" height="160" alt="Nova AI Logo"/>
 
 # Nova AI
