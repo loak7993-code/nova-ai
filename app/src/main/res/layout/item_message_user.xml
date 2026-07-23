@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="end"
+    android:paddingTop="16dp"
+    android:paddingBottom="4dp"
+    android:paddingStart="48dp"
+    android:paddingEnd="14dp">
+
+    <TextView
+        android:id="@+id/userText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxWidth="320dp"
+        android:background="@drawable/bubble_out"
+        android:textColor="@color/user_bubble_text"
+        android:textSize="16sp"
+        android:lineSpacingExtra="5dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:textIsSelectable="true" />
+
+    <ImageView
+        android:id="@+id/userImage"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="8dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:background="@drawable/bubble_out"
+        android:visibility="gone"
+        android:contentDescription="@string/attach" />
+
+    <LinearLayout
+        android:id="@+id/userActions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="2dp"
+        android:gravity="center_vertical">
+
+        <ImageButton
+            android:id="@+id/userActionCopy"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:src="@drawable/ic_copy"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="8dp"
+            app:tint="@color/text_secondary_dark"
+            android:contentDescription="@string/copy" />
+
+        <ImageButton
+            android:id="@+id/userActionEdit"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:src="@drawable/ic_edit"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="8dp"
+            android:layout_marginStart="4dp"
+            app:tint="@color/text_secondary_dark"
+            android:contentDescription="@string/edit" />
+    </LinearLayout>
+</LinearLayout>

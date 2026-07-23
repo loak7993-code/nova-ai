@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Base theme -->
+    <style name="Theme.NovaAI" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="colorPrimary">@color/nova_primary</item>
+        <item name="colorPrimaryDark">@color/nova_primary_dark</item>
+        <item name="colorAccent">@color/nova_accent</item>
+        <item name="android:windowBackground">@color/bg_dark</item>
+        <item name="android:statusBarColor">@color/bg_dark</item>
+        <item name="android:navigationBarColor">@color/bg_dark</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:textColorPrimary">@color/text_primary_dark</item>
+        <item name="android:textColorSecondary">@color/text_secondary_dark</item>
+        <item name="android:fontFamily">@font/geist</item>
+        <item name="fontFamily">@font/geist</item>
+    </style>
+
+    <style name="Theme.NovaAI.Light" parent="Theme.Material3.Light.NoActionBar">
+        <item name="colorPrimary">@color/nova_primary</item>
+        <item name="colorPrimaryDark">@color/nova_primary_dark</item>
+        <item name="colorAccent">@color/nova_accent</item>
+        <item name="android:windowBackground">@color/bg_light</item>
+        <item name="android:statusBarColor">@color/bg_light</item>
+        <item name="android:navigationBarColor">@color/bg_light</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:textColorPrimary">@color/text_primary_light</item>
+        <item name="android:textColorSecondary">@color/text_secondary_light</item>
+    </style>
+
+    <style name="NovaBubble.User" parent="">
+        <item name="android:background">@drawable/bg_bubble_user</item>
+        <item name="android:textColor">@color/user_bubble_text</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:lineSpacingExtra">4dp</item>
+        <item name="android:paddingTop">11dp</item>
+        <item name="android:paddingBottom">11dp</item>
+        <item name="android:paddingStart">15dp</item>
+        <item name="android:paddingEnd">15dp</item>
+    </style>
+
+    <style name="NovaBubble.AI" parent="">
+        <item name="android:background">@drawable/bg_bubble_ai</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:lineSpacingExtra">4dp</item>
+        <item name="android:paddingTop">11dp</item>
+        <item name="android:paddingBottom">11dp</item>
+        <item name="android:paddingStart">15dp</item>
+        <item name="android:paddingEnd">15dp</item>
+    </style>
+
+    <style name="NovaChip" parent="Widget.Material3.Chip.Suggestion">
+        <item name="chipBackgroundColor">@color/surface_3_dark</item>
+        <item name="android:textColor">@color/text_primary_dark</item>
+        <item name="chipStrokeWidth">0dp</item>
+    </style>
+
+    <style name="NovaButton.Send" parent="Widget.Material3.Button.IconButton">
+        <item name="android:background">@drawable/bg_send_button</item>
+        <item name="iconTint">@android:color/white</item>
+    </style>
+
+    <style name="NovaTitleText">
+        <item name="android:textSize">22sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/text_primary_dark</item>
+    </style>
+
+    <style name="NovaHeader">
+        <item name="android:textSize">13sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/nova_primary</item>
+        <item name="android:letterSpacing">0.08</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <style name="NovaToolbarTitle" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/text_primary_dark</item>
+        <item name="android:letterSpacing">-0.02</item>
+    </style>
+
+    <style name="NovaToolbarSubtitle" parent="TextAppearance.Material3.LabelSmall">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/text_secondary_dark</item>
+        <item name="android:letterSpacing">0.01</item>
+    </style>
+</resources>

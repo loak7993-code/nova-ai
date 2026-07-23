@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="top"
+    android:paddingTop="18dp"
+    android:paddingBottom="4dp"
+    android:paddingStart="14dp"
+    android:paddingEnd="14dp">
+
+    <ImageView
+        android:id="@+id/aiAvatar"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:src="@drawable/ic_nova_logo"
+        android:background="@drawable/bg_avatar_circle"
+        android:padding="7dp"
+        android:scaleType="fitCenter"
+        android:layout_marginEnd="12dp"
+        android:layout_marginTop="2dp" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/thinkingSection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:layout_marginBottom="8dp">
+
+            <LinearLayout
+                android:id="@+id/thinkingHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="@drawable/bg_thinking_pill"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:clickable="true"
+                android:focusable="true">
+
+                <ProgressBar
+                    android:id="@+id/thinkingSpinner"
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:layout_marginEnd="8dp"
+                    android:indeterminateTint="@color/nova_primary" />
+
+                <TextView
+                    android:id="@+id/thinkingLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Thinking"
+                    android:textColor="@color/nova_primary"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/thinkingChevron"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/ic_chevron_down"
+                    android:layout_marginStart="6dp"
+                    app:tint="@color/nova_primary" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/thinkingText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_secondary_dark"
+                android:textSize="13sp"
+                android:lineSpacingExtra="3dp"
+                android:visibility="gone"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="4dp"
+                android:fontFamily="monospace" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/aiText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_primary_dark"
+            android:textSize="16sp"
+            android:lineSpacingExtra="5dp"
+            android:textIsSelectable="true" />
+
+        <ProgressBar
+            android:id="@+id/thinkingProgress"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_marginTop="10dp"
+            android:visibility="gone"
+            android:indeterminateTint="@color/nova_primary" />
+
+        <LinearLayout
+            android:id="@+id/aiActions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            android:layout_marginTop="12dp"
+            android:gravity="center_vertical">
+
+            <ImageButton
+                android:id="@+id/actionCopy"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:src="@drawable/ic_copy"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:padding="9dp"
+                app:tint="@color/text_secondary_dark"
+                android:contentDescription="@string/copy" />
+
+            <ImageButton
+                android:id="@+id/actionRegenerate"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:src="@drawable/ic_regenerate"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:padding="9dp"
+                android:layout_marginStart="4dp"
+                app:tint="@color/text_secondary_dark"
+                android:contentDescription="@string/regenerate" />
+
+            <ImageButton
+                android:id="@+id/actionShare"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:src="@drawable/ic_share"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:padding="9dp"
+                android:layout_marginStart="4dp"
+                app:tint="@color/text_secondary_dark"
+                android:contentDescription="@string/share" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

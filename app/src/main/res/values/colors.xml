@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Single accent: warm amber/copper (NOT purple/blue AI gradient) -->
+    <color name="nova_primary">#D4915D</color>
+    <color name="nova_primary_dark">#B87848</color>
+    <color name="nova_accent">#D4915D</color>
+    <color name="nova_gradient_start">#D4915D</color>
+    <color name="nova_gradient_end">#D4915D</color>
+
+    <!-- Warm-tinted dark surfaces (consistent warm hue family) -->
+    <color name="bg_dark">#1A1715</color>
+    <color name="surface_dark">#221E1B</color>
+    <color name="surface_2_dark">#2B2622</color>
+    <color name="surface_3_dark">#332D28</color>
+    <color name="bubble_user_dark">#3A332D</color>
+    <color name="bubble_ai_dark">#221E1B</color>
+
+    <!-- Warm text tones -->
+    <color name="text_primary_dark">#EDE6E0</color>
+    <color name="text_secondary_dark">#9B8F85</color>
+
+    <color name="user_bubble_text">#FFFFFF</color>
+    <color name="divider_dark">#3A322C</color>
+    <color name="error_red">#E07070</color>
+    <color name="stop_red">#E07070</color>
+
+    <!-- Light surfaces (warm) -->
+    <color name="bg_light">#FAF8F6</color>
+    <color name="surface_light">#F3EFE9</color>
+    <color name="surface_2_light">#EAE3DA</color>
+    <color name="bubble_user_light">#EAE3DA</color>
+    <color name="text_primary_light">#1A1715</color>
+    <color name="text_secondary_light">#7A6E62</color>
+    <color name="divider_light">#D9D0C5</color>
+</resources>

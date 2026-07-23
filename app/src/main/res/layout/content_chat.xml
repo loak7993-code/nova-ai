@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/bg_dark">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/messagesList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingTop="8dp"
+            android:paddingBottom="12dp"
+            android:scrollbars="vertical"
+            android:overScrollMode="never" />
+
+        <LinearLayout
+            android:id="@+id/emptyState"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:visibility="gone"
+            android:padding="32dp">
+
+            <ImageView
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:src="@drawable/ic_nova_logo"
+                android:background="@drawable/bg_avatar_circle"
+                android:padding="14dp"
+                android:scaleType="fitCenter" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
+                android:text="@string/welcome_greeting"
+                android:textColor="@color/text_primary_dark"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/welcome_subtitle"
+                android:textColor="@color/text_secondary_dark"
+                android:textSize="15sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="40dp">
+
+                <TextView
+                    android:id="@+id/suggestion1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:background="@drawable/bg_suggestion_card"
+                    android:text="Explain quantum computing simply"
+                    android:textColor="@color/text_primary_dark"
+                    android:textSize="14.5sp"
+                    android:padding="16dp"
+                    android:gravity="start|center_vertical"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground" />
+
+                <TextView
+                    android:id="@+id/suggestion2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:background="@drawable/bg_suggestion_card"
+                    android:text="Write a haiku about the ocean"
+                    android:textColor="@color/text_primary_dark"
+                    android:textSize="14.5sp"
+                    android:padding="16dp"
+                    android:gravity="start|center_vertical"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground" />
+
+                <TextView
+                    android:id="@+id/suggestion3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_suggestion_card"
+                    android:text="Give me a productive daily routine"
+                    android:textColor="@color/text_primary_dark"
+                    android:textSize="14.5sp"
+                    android:padding="16dp"
+                    android:gravity="start|center_vertical"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground" />
+            </LinearLayout>
+        </LinearLayout>
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/attachmentPreview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:visibility="gone"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="0dp"
+        android:background="@color/bg_dark">
+
+        <FrameLayout
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginEnd="8dp">
+
+            <ImageView
+                android:id="@+id/attachmentThumb"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:background="@drawable/bg_thinking_pill"
+                android:contentDescription="@string/attach" />
+
+            <ImageButton
+                android:id="@+id/attachmentRemove"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="end|top"
+                android:background="@drawable/bg_avatar_circle"
+                android:src="@drawable/ic_close"
+                android:tint="@android:color/white"
+                android:scaleType="centerInside"
+                android:padding="3dp"
+                android:contentDescription="@string/cancel" />
+        </FrameLayout>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/image_attached"
+            android:textColor="@color/text_secondary_dark"
+            android:textSize="13sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical|bottom"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="14dp"
+        android:background="@color/bg_dark"
+        android:elevation="8dp">
+
+        <ImageButton
+            android:id="@+id/attachButton"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_attach"
+            android:tint="@color/text_secondary_dark"
+            android:contentDescription="@string/attach"
+            android:padding="10dp" />
+
+        <EditText
+            android:id="@+id/inputField"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/bg_input"
+            android:hint="@string/message_hint"
+            android:textColorHint="@color/text_secondary_dark"
+            android:textColor="@color/text_primary_dark"
+            android:textSize="15.5sp"
+            android:maxLines="5"
+            android:inputType="textMultiLine|textCapSentences|textAutoCorrect"
+            android:imeOptions="actionSend"
+            android:paddingTop="13dp"
+            android:paddingBottom="13dp"
+            android:paddingStart="14dp"
+            android:paddingEnd="14dp"
+            android:scrollbars="vertical" />
+
+        <ImageButton
+            android:id="@+id/sendButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/bg_send_button_selector"
+            android:src="@drawable/ic_send"
+            android:scaleType="centerInside"
+            android:padding="13dp"
+            android:tint="@android:color/white"
+            android:enabled="false"
+            android:contentDescription="@string/send" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/bottomVersionTag"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/text_secondary_dark"
+        android:textSize="10sp"
+        android:paddingTop="2dp"
+        android:paddingBottom="4dp"
+        android:background="@color/bg_dark" />
+
+</LinearLayout>
