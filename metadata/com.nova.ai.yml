@@ -1,0 +1,47 @@
+Categories:
+  - Internet
+  - Science & Education
+License: GPL-3.0-or-later
+AuthorName: loak7993-code
+SourceCode: https://github.com/loak7993-code/nova-ai
+IssueTracker: https://github.com/loak7993-code/nova-ai/issues
+
+AutoName: Nova AI
+
+Summary: Privacy-focused AI chat client with tool calling and web search
+
+Description: |
+    Nova AI is a privacy-focused Android AI chat client that supports multiple
+    LLM models via the Weights & Biases Inference API.
+
+    Features:
+    * Multi-model support: GLM-5.2, MiniMax M3, Kimi K2.7 Code
+    * Streaming responses with collapsible reasoning/thinking display
+    * Tool calling: calculator, current time, and web search (SearXNG)
+    * Image vision support (Kimi K2.7 Code, MiniMax M3)
+    * Markdown rendering with tables, code blocks, lists, and headings
+    * Conversation management with chat history persistence
+    * Self-hosted SearXNG web search (no API key required)
+    * No tracking, no telemetry, no ads, no proprietary SDKs
+
+    Users must provide their own W&B Inference API key. Web search requires
+    a self-hosted or public SearXNG instance URL.
+
+RepoType: git
+Repo: https://github.com/loak7993-code/nova-ai
+
+Builds:
+  - versionName: '2.0.1'
+    versionCode: 14
+    commit: v2.0.1
+    gradle:
+      - yes
+
+MaintainerNotes: |
+    First release. All dependencies are FOSS (Apache 2.0).
+    Geist font bundled under SIL Open Font License.
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: '2.0.1'
+CurrentVersionCode: 14
