@@ -4,21 +4,21 @@
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
-    <group android:name="root" android:translateX="27" android:translateY="27">
+    <group android:name="root" android:translateX="30" android:translateY="30">
 
         <path
             android:fillColor="#D4915D"
-            android:pathData="M27,4 L30.5,16.5 L23.5,16.5 Z
-                             M27,4 L30.5,16.5 L34,20.5 L50,27 L34,33.5 L30.5,37.5 L27,50 L23.5,37.5 L20,33.5 L4,27 L20,20.5 L23.5,16.5 Z" />
+            android:pathData="M24,4 L26.5,18 L21.5,18 Z
+                             M24,4 L26.5,18 L29,21 L41,24 L29,27 L26.5,30 L24,44 L21.5,30 L19,27 L7,24 L19,21 L21.5,18 Z" />
 
         <path
             android:fillColor="#FFFFFF"
-            android:pathData="M27,15 L29,22 L27,19 L25,22 Z" />
+            android:pathData="M24,17 L25,22 L24,20.5 L23,22 Z" />
 
         <path
             android:strokeColor="#D4915D"
-            android:strokeWidth="2"
-            android:strokeAlpha="0.4"
-            android:pathData="M27,9 m-16,0 a16,16 0 1,0 32,0 a16,16 0 1,0 -32,0" />
+            android:strokeWidth="1.5"
+            android:strokeAlpha="0.35"
+            android:pathData="M24,8 m-12,0 a12,12 0 1,0 24,0 a12,12 0 1,0 -24,0" />
     </group>
 </vector>
