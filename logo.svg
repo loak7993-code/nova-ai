@@ -2,20 +2,51 @@
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="256" y2="256" gradientUnits="userSpaceOnUse">
       <stop stop-color="#1A1715"/>
-      <stop offset="1" stop-color="#2B2622"/>
+      <stop offset="1" stop-color="#252220"/>
     </linearGradient>
     <linearGradient id="star" x1="128" y1="20" x2="128" y2="236" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#F5B580"/>
-      <stop offset="0.5" stop-color="#D4915D"/>
-      <stop offset="1" stop-color="#A86A3C"/>
+      <stop stop-color="#FFD4A8"/>
+      <stop offset="0.4" stop-color="#E89B62"/>
+      <stop offset="1" stop-color="#A56A3A"/>
     </linearGradient>
+    <radialGradient id="glow" cx="128" cy="128" r="60" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#D4915D" stop-opacity="0.15"/>
+      <stop offset="1" stop-color="#D4915D" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
   </defs>
 
   <rect width="256" height="256" rx="56" fill="url(#bg)"/>
 
-  <circle cx="128" cy="128" r="64" stroke="#D4915D" stroke-opacity="0.2" stroke-width="2"/>
+  <circle cx="128" cy="128" r="100" fill="url(#glow)"/>
 
-  <path d="M128 20 L136 116 L232 128 L136 140 L128 236 L120 140 L24 128 L120 116 Z" fill="url(#star)"/>
+  <circle cx="128" cy="128" r="68" stroke="#D4915D" stroke-opacity="0.15" stroke-width="1.5"/>
+  <circle cx="128" cy="128" r="52" stroke="#D4915D" stroke-opacity="0.08" stroke-width="1"/>
 
-  <path d="M128 84 L132 124 L128 112 L124 124 Z" fill="#FFFFFF" opacity="0.95"/>
+  <g filter="url(#shadow)">
+    <path d="M128 24
+             L138 112
+             L144 112
+             L240 128
+             L144 144
+             L138 144
+             L128 232
+             L118 144
+             L112 144
+             L16 128
+             L112 112
+             L118 112
+             Z"
+          fill="url(#star)"/>
+  </g>
+
+  <path d="M128 92 L133 125 L128 116 L123 125 Z" fill="#FFFFFF" opacity="0.9"/>
+
+  <circle cx="128" cy="128" r="4" fill="#FFFFFF" opacity="0.7"/>
 </svg>

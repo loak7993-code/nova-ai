@@ -13,7 +13,7 @@
     <ImageView
         android:layout_width="18dp"
         android:layout_height="18dp"
-        android:src="@drawable/ic_nova_logo"
+        android:src="@drawable/nova_logo"
         android:alpha="0.9"
         android:layout_marginEnd="10dp" />
 

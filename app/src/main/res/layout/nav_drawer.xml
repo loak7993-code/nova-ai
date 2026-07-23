@@ -19,7 +19,7 @@
         <ImageView
             android:layout_width="34dp"
             android:layout_height="34dp"
-            android:src="@drawable/ic_nova_logo"
+            android:src="@drawable/nova_logo"
             android:background="@drawable/bg_avatar_circle"
             android:padding="5dp"
             android:scaleType="fitCenter" />
