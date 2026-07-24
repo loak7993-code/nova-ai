@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
     private AtomicBoolean cancelled = new AtomicBoolean(false);
     private boolean responding = false;
     private okhttp3.Call currentCall;
-    private com.google.android.material.bottomsheet.BottomSheetDialog activeSheet;
+    private android.app.Dialog activeSheet;
     private String pendingImagePath;
     private View attachmentPreview;
     private ImageView attachmentThumb;
@@ -254,15 +254,14 @@ public class MainActivity extends AppCompatActivity {
         String current = Settings.get().model;
         String[] modelIds = com.nova.ai.data.Settings.modelsForActive();
 
-        android.view.View sheetView = getLayoutInflater().inflate(R.layout.bottom_sheet_model_picker, null);
+        android.view.View sheetView = getLayoutInflater().inflate(R.layout.dialog_model_picker, null);
         android.widget.TextView mpTitle = sheetView.findViewById(R.id.mpTitle);
         android.widget.TextView mpProvider = sheetView.findViewById(R.id.mpProvider);
         androidx.recyclerview.widget.RecyclerView rv = sheetView.findViewById(R.id.modelList);
 
         ProviderProfile active = ProviderManager.get().active();
         String providerName = active != null ? active.name : "OpenCode Zen";
-        mpTitle.setText("Select Model");
-        mpProvider.setText(providerName + " · " + modelIds.length + " available");
+        mpProvider.setText(providerName + " · " + modelIds.length + " models");
 
         java.util.List<com.nova.ai.data.ModelInfo> models = new java.util.ArrayList<>();
         for (String mid : modelIds) {
@@ -287,8 +286,27 @@ public class MainActivity extends AppCompatActivity {
         rv.setLayoutManager(new androidx.recyclerview.widget.LinearLayoutManager(this));
         rv.setAdapter(adapter);
 
-        activeSheet = new com.google.android.material.bottomsheet.BottomSheetDialog(this);
+        activeSheet = new android.app.Dialog(this);
         activeSheet.setContentView(sheetView);
+        activeSheet.setCancelable(true);
+        activeSheet.setCanceledOnTouchOutside(true);
+
+        android.view.WindowManager.LayoutParams lp = activeSheet.getWindow().getAttributes();
+        lp.width = android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+        activeSheet.getWindow().setAttributes(lp);
+        activeSheet.getWindow().setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+        activeSheet.setOnShowListener(d -> {
+            int dp = (int) (1 * getResources().getDisplayMetrics().density);
+            int maxH = 380 * dp;
+            int count = models.size();
+            int itemH = (int) (72 * dp);
+            int headerH = (int) (64 * dp);
+            int desired = headerH + count * itemH + (int)(20 * dp);
+            rv.getLayoutParams().height = Math.min(desired, maxH);
+            rv.requestLayout();
+        });
+
         activeSheet.show();
     }
 
