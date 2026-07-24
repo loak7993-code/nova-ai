@@ -394,7 +394,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onReasoning(String delta) {
                 runOnUiThread(() -> {
-                    aiMsg.reasoning = delta;
+                    if (aiMsg.reasoning == null) aiMsg.reasoning = "";
+                    aiMsg.reasoning += delta;
                     messageAdapter.updateStreaming(index);
                     scrollToEnd();
                 });

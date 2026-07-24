@@ -83,6 +83,11 @@ Builds:
     commit: v2.4.1
     gradle:
       - yes
+  - versionName: '2.5'
+    versionCode: 25
+    commit: v2.5
+    gradle:
+      - yes
 
 MaintainerNotes: |
     All dependencies are FOSS (Apache 2.0).
@@ -90,5 +95,5 @@ MaintainerNotes: |
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: '2.4.1'
-CurrentVersionCode: 24
+CurrentVersion: '2.5'
+CurrentVersionCode: 25
