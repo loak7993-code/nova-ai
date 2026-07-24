@@ -163,7 +163,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             currentRaw = m.content == null ? "" : m.content;
             String reasoning = m.reasoning == null ? "" : m.reasoning;
 
-            if (m.thinking) {
+            if (m.thinking && reasoning.isEmpty()) {
                 text.setText(R.string.thinking);
                 progress.setVisibility(View.VISIBLE);
                 actions.setVisibility(View.GONE);
@@ -171,14 +171,22 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 return;
             }
             progress.setVisibility(View.GONE);
-            text.setText(MarkdownFormatter.format(currentRaw));
+            if (currentRaw.isEmpty() && m.thinking) {
+                text.setText("");
+            } else {
+                text.setText(MarkdownFormatter.format(currentRaw));
+            }
 
-            if (reasoning != null && !reasoning.isEmpty()) {
+            if (!reasoning.isEmpty()) {
                 thinkingSection.setVisibility(View.VISIBLE);
                 thinkingText.setText(reasoning);
-                if (m.streaming) {
+                if (m.streaming || m.thinking) {
                     thinkingSpinner.setVisibility(View.VISIBLE);
                     thinkingLabel.setText("Thinking");
+                    if (!thinkingExpanded) {
+                        thinkingText.setVisibility(View.VISIBLE);
+                        thinkingChevron.setRotation(180);
+                    }
                 } else {
                     thinkingSpinner.setVisibility(View.GONE);
                     thinkingLabel.setText("Thought process");

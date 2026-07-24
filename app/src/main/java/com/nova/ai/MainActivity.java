@@ -495,10 +495,20 @@ public class MainActivity extends AppCompatActivity {
         if (currentCall != null && !currentCall.isCanceled()) currentCall.cancel();
     }
 
+    private boolean isNearBottom() {
+        LinearLayoutManager lm = (LinearLayoutManager) messagesList.getLayoutManager();
+        if (lm == null) return true;
+        int lastVisible = lm.findLastCompletelyVisibleItemPosition();
+        int total = messageAdapter.getItemCount() - 1;
+        return lastVisible >= total - 2;
+    }
+
     private void scrollToEnd() {
         messagesList.post(() -> {
             if (messageAdapter.getItemCount() > 0) {
-                messagesList.smoothScrollToPosition(messageAdapter.getItemCount() - 1);
+                if (isNearBottom()) {
+                    messagesList.scrollToPosition(messageAdapter.getItemCount() - 1);
+                }
             }
         });
     }
