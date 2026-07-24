@@ -34,6 +34,7 @@ import com.nova.ai.data.Settings;
 import com.nova.ai.net.AiClient;
 import com.nova.ai.ui.ConversationAdapter;
 import com.nova.ai.ui.MessageAdapter;
+import com.nova.ai.ui.ModelPickerAdapter;
 
 import com.nova.ai.BuildConfig;
 
@@ -254,37 +255,37 @@ public class MainActivity extends AppCompatActivity {
         String[] modelIds = com.nova.ai.data.Settings.modelsForActive();
 
         android.view.View sheetView = getLayoutInflater().inflate(R.layout.bottom_sheet_model_picker, null);
-        android.widget.LinearLayout list = sheetView.findViewById(R.id.modelList);
+        android.widget.TextView mpTitle = sheetView.findViewById(R.id.mpTitle);
+        android.widget.TextView mpProvider = sheetView.findViewById(R.id.mpProvider);
+        androidx.recyclerview.widget.RecyclerView rv = sheetView.findViewById(R.id.modelList);
 
-        for (int i = 0; i < modelIds.length; i++) {
-            String mid = modelIds[i];
-            com.nova.ai.data.ModelInfo m = com.nova.ai.data.ModelRegistry.find(mid);
-            android.view.View card = getLayoutInflater().inflate(R.layout.item_model_card, list, false);
-            android.widget.TextView name = card.findViewById(R.id.modelName);
-            android.widget.TextView desc = card.findViewById(R.id.modelDesc);
-            android.widget.ImageView check = card.findViewById(R.id.modelCheck);
-            name.setText(m.name);
-            desc.setText(m.description);
-            boolean isActive = mid.equals(current);
-            if (isActive) {
-                card.setBackgroundResource(R.drawable.bg_model_card_selected);
-                check.setVisibility(android.view.View.VISIBLE);
-            }
-            card.setOnClickListener(v -> {
-                Settings.get().model = mid;
-                Settings.get().save();
-                ProviderProfile active = ProviderManager.get().active();
-                if (active != null) {
-                    active.activeModel = mid;
-                    ProviderManager.get().updateModels(active.id,
-                            active.models != null ? active.models : new java.util.ArrayList<>(), mid);
-                }
-                updateModelDisplay();
-                Toast.makeText(this, m.name, Toast.LENGTH_SHORT).show();
-                dismissActiveSheet();
-            });
-            list.addView(card);
+        ProviderProfile active = ProviderManager.get().active();
+        String providerName = active != null ? active.name : "OpenCode Zen";
+        mpTitle.setText("Select Model");
+        mpProvider.setText(providerName + " · " + modelIds.length + " available");
+
+        java.util.List<com.nova.ai.data.ModelInfo> models = new java.util.ArrayList<>();
+        for (String mid : modelIds) {
+            models.add(com.nova.ai.data.ModelRegistry.find(mid));
         }
+
+        ModelPickerAdapter adapter = new ModelPickerAdapter((modelId, pos) -> {
+            Settings.get().model = modelId;
+            Settings.get().save();
+            ProviderProfile ap = ProviderManager.get().active();
+            if (ap != null) {
+                ap.activeModel = modelId;
+                ProviderManager.get().updateModels(ap.id,
+                        ap.models != null ? ap.models : new java.util.ArrayList<>(), modelId);
+            }
+            updateModelDisplay();
+            com.nova.ai.data.ModelInfo info = com.nova.ai.data.ModelRegistry.find(modelId);
+            Toast.makeText(this, info.name, Toast.LENGTH_SHORT).show();
+            dismissActiveSheet();
+        });
+        adapter.setItems(models, current);
+        rv.setLayoutManager(new androidx.recyclerview.widget.LinearLayoutManager(this));
+        rv.setAdapter(adapter);
 
         activeSheet = new com.google.android.material.bottomsheet.BottomSheetDialog(this);
         activeSheet.setContentView(sheetView);

@@ -11,30 +11,35 @@
         android:layout_height="4dp"
         android:background="@color/divider_dark"
         android:layout_gravity="center"
-        android:layout_marginBottom="16dp" />
+        android:layout_marginBottom="12dp" />
 
     <TextView
+        android:id="@+id/mpTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/pref_model"
         android:textColor="@color/nova_primary"
-        android:textSize="16sp"
+        android:textSize="17sp"
         android:textStyle="bold"
         android:paddingHorizontal="24dp"
-        android:layout_marginBottom="16dp" />
+        android:layout_marginBottom="2dp" />
 
-    <ScrollView
+    <TextView
+        android:id="@+id/mpProvider"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/text_secondary_dark"
+        android:textSize="12sp"
+        android:paddingHorizontal="24dp"
+        android:layout_marginBottom="14dp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/modelList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="24dp"
-        android:paddingBottom="24dp">
-
-        <LinearLayout
-            android:id="@+id/modelList"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" />
-
-    </ScrollView>
+        android:maxHeight="420dp"
+        android:clipToPadding="false"
+        android:paddingHorizontal="20dp"
+        android:paddingBottom="24dp"
+        android:overScrollMode="never" />
 
 </LinearLayout>
