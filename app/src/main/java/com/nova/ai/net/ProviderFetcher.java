@@ -81,24 +81,33 @@ public class ProviderFetcher {
             start += 13;
             int end = html.indexOf("\"", start);
             if (end < 0) break;
-            String raw = html.substring(start, end);
+            String raw = html.substring(start, end).replace("&", "&");
             idx = end + 1;
 
             String[] parts = raw.split("\\s+");
             if (parts.length < 4) continue;
 
-            String displayName = parts[0];
-            String slug = parts[1];
-            String sdk = parts[2];
-            String apiUrl = parts[3];
+            int sdkIdx = -1;
+            for (int i = 0; i < parts.length; i++) {
+                if (parts[i].startsWith("@ai-sdk/")) { sdkIdx = i; break; }
+            }
+            if (sdkIdx < 0 || sdkIdx + 1 >= parts.length) continue;
+
+            String sdk = parts[sdkIdx];
+            String apiUrl = parts[sdkIdx + 1];
 
             if (!"@ai-sdk/openai-compatible".equals(sdk)) continue;
             if (!apiUrl.startsWith("http")) continue;
             if (apiUrl.contains("${")) continue;
             if (apiUrl.equals("-")) continue;
 
-            String niceName = displayName;
-            for (int i = 4; i < parts.length; i++) {
+            StringBuilder nameBuilder = new StringBuilder(parts[0]);
+            for (int i = 1; i < sdkIdx - 1; i++) {
+                nameBuilder.append(" ").append(parts[i]);
+            }
+            String niceName = nameBuilder.toString();
+
+            for (int i = sdkIdx + 2; i < parts.length; i++) {
                 if (parts[i].startsWith("http") || parts[i].equals("-")) break;
                 niceName += " " + parts[i];
             }
