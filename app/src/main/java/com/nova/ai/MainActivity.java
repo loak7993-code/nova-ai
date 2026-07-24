@@ -553,7 +553,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean isNearBottom() {
         LinearLayoutManager lm = (LinearLayoutManager) messagesList.getLayoutManager();
         if (lm == null) return true;
-        int lastVisible = lm.findLastCompletelyVisibleItemPosition();
+        int lastVisible = lm.findLastVisibleItemPosition();
         int total = messageAdapter.getItemCount() - 1;
         return lastVisible >= total - 2;
     }
@@ -565,7 +565,7 @@ public class MainActivity extends AppCompatActivity {
             uiUpdatePending = false;
             if (uiStreamingIndex >= 0 && uiStreamingMsg != null) {
                 messageAdapter.updateStreaming(uiStreamingIndex);
-                if (!userScrolledAway && isNearBottom()) {
+                if (!userScrolledAway) {
                     messagesList.scrollToPosition(messageAdapter.getItemCount() - 1);
                 }
             }
@@ -575,7 +575,7 @@ public class MainActivity extends AppCompatActivity {
     private void scrollToEnd() {
         messagesList.post(() -> {
             if (messageAdapter.getItemCount() > 0) {
-                if (!userScrolledAway && isNearBottom()) {
+                if (!userScrolledAway) {
                     messagesList.scrollToPosition(messageAdapter.getItemCount() - 1);
                 }
             }

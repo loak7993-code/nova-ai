@@ -153,6 +153,11 @@ Builds:
     commit: v2.6.6
     gradle:
       - yes
+  - versionName: '2.6.7'
+    versionCode: 39
+    commit: v2.6.7
+    gradle:
+      - yes
 
 MaintainerNotes: |
     All dependencies are FOSS (Apache 2.0).
@@ -160,5 +165,5 @@ MaintainerNotes: |
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: '2.6.6'
-CurrentVersionCode: 38
+CurrentVersion: '2.6.7'
+CurrentVersionCode: 39
