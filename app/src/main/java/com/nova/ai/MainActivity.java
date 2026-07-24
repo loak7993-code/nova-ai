@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
     private AtomicBoolean cancelled = new AtomicBoolean(false);
     private boolean responding = false;
     private okhttp3.Call currentCall;
-    private androidx.appcompat.app.AlertDialog activeDialog;
+    private com.google.android.material.bottomsheet.BottomSheetDialog activeSheet;
     private String pendingImagePath;
     private View attachmentPreview;
     private ImageView attachmentThumb;
@@ -245,8 +245,8 @@ public class MainActivity extends AppCompatActivity {
         String current = Settings.get().model;
         java.util.List<com.nova.ai.data.ModelInfo> models = com.nova.ai.data.ModelRegistry.ALL;
 
-        android.view.View dialogView = getLayoutInflater().inflate(R.layout.dialog_model_picker, null);
-        android.widget.LinearLayout list = dialogView.findViewById(R.id.modelList);
+        android.view.View sheetView = getLayoutInflater().inflate(R.layout.bottom_sheet_model_picker, null);
+        android.widget.LinearLayout list = sheetView.findViewById(R.id.modelList);
 
         for (int i = 0; i < models.size(); i++) {
             com.nova.ai.data.ModelInfo m = models.get(i);
@@ -266,21 +266,19 @@ public class MainActivity extends AppCompatActivity {
                 Settings.get().save();
                 updateModelDisplay();
                 Toast.makeText(this, m.name, Toast.LENGTH_SHORT).show();
-                dismissActiveDialog();
+                dismissActiveSheet();
             });
             list.addView(card);
         }
 
-        activeDialog = new androidx.appcompat.app.AlertDialog.Builder(this)
-                .setView(dialogView)
-                .setNegativeButton(R.string.cancel, null)
-                .create();
-        activeDialog.show();
+        activeSheet = new com.google.android.material.bottomsheet.BottomSheetDialog(this);
+        activeSheet.setContentView(sheetView);
+        activeSheet.show();
     }
 
-    private void dismissActiveDialog() {
-        if (activeDialog != null && activeDialog.isShowing()) {
-            activeDialog.dismiss();
+    private void dismissActiveSheet() {
+        if (activeSheet != null && activeSheet.isShowing()) {
+            activeSheet.dismiss();
         }
     }
 
@@ -559,22 +557,33 @@ public class MainActivity extends AppCompatActivity {
         String modelId = Settings.get().model;
         com.nova.ai.data.ModelInfo info = com.nova.ai.data.ModelRegistry.find(modelId);
         if (!info.vision) {
-            new androidx.appcompat.app.AlertDialog.Builder(this)
-                    .setTitle(R.string.attention)
-                    .setMessage(getString(R.string.err_no_vision, info.name))
-                    .setPositiveButton(R.string.switch_model, (d, w) -> {
-                        for (com.nova.ai.data.ModelInfo m : com.nova.ai.data.ModelRegistry.ALL) {
-                            if (m.vision) {
-                                Settings.get().model = m.id;
-                                Settings.get().save();
-                                updateModelDisplay();
-                                Toast.makeText(this, m.name, Toast.LENGTH_SHORT).show();
-                                break;
-                            }
-                        }
-                    })
-                    .setNegativeButton(R.string.cancel, null)
-                    .show();
+            com.google.android.material.bottomsheet.BottomSheetDialog sheet =
+                    new com.google.android.material.bottomsheet.BottomSheetDialog(this);
+            sheet.setContentView(R.layout.bottom_sheet_confirm);
+
+            android.widget.TextView title = sheet.findViewById(R.id.bsConfirmTitle);
+            android.widget.TextView message = sheet.findViewById(R.id.bsConfirmMessage);
+            android.widget.Button cancel = sheet.findViewById(R.id.bsBtnCancel);
+            android.widget.Button confirm = sheet.findViewById(R.id.bsBtnConfirm);
+
+            if (title != null) title.setText(R.string.attention);
+            if (message != null) message.setText(getString(R.string.err_no_vision, info.name));
+            if (cancel != null) cancel.setText(R.string.cancel);
+            if (cancel != null) cancel.setOnClickListener(v -> sheet.dismiss());
+            if (confirm != null) confirm.setText(R.string.switch_model);
+            if (confirm != null) confirm.setOnClickListener(v -> {
+                for (com.nova.ai.data.ModelInfo m : com.nova.ai.data.ModelRegistry.ALL) {
+                    if (m.vision) {
+                        Settings.get().model = m.id;
+                        Settings.get().save();
+                        updateModelDisplay();
+                        Toast.makeText(this, m.name, Toast.LENGTH_SHORT).show();
+                        break;
+                    }
+                }
+                sheet.dismiss();
+            });
+            sheet.show();
         }
     }
 }
