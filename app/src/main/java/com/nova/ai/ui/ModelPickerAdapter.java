@@ -23,6 +23,12 @@ public class ModelPickerAdapter extends RecyclerView.Adapter<ModelPickerAdapter.
         void onPick(String modelId, int position);
     }
 
+    private static final int CHIP_FREE = 0;
+    private static final int CHIP_VISION = 1;
+    private static final int CHIP_REASON = 2;
+    private static final int CHIP_CODE = 3;
+    private static final int CHIP_TOOLS = 4;
+
     private final List<ModelInfo> items = new ArrayList<>();
     private final OnPick listener;
     private String selectedId;
@@ -58,32 +64,59 @@ public class ModelPickerAdapter extends RecyclerView.Adapter<ModelPickerAdapter.
         if (isActive) {
             holder.itemView.setBackgroundResource(R.drawable.bg_model_card_selected);
             holder.check.setVisibility(View.VISIBLE);
+            holder.name.setTextColor(ctx.getResources().getColor(R.color.nova_primary));
         } else {
             holder.itemView.setBackgroundResource(R.drawable.bg_model_card);
             holder.check.setVisibility(View.INVISIBLE);
+            holder.name.setTextColor(ctx.getResources().getColor(R.color.text_primary_dark));
         }
 
         holder.chips.removeAllViews();
-        boolean isFree = m.description.toLowerCase().contains("free");
-        if (isFree) addChip(ctx, holder.chips, "FREE", true);
-        if (m.vision) addChip(ctx, holder.chips, "VISION", false);
         String descLower = m.description.toLowerCase();
-        if (descLower.contains("reasoning")) addChip(ctx, holder.chips, "REASON", false);
-        if (descLower.contains("coding") || descLower.contains("code")) addChip(ctx, holder.chips, "CODE", false);
-        if (descLower.contains("tools") || descLower.contains("agentic")) addChip(ctx, holder.chips, "TOOLS", false);
+        if (descLower.contains("free")) addChip(ctx, holder.chips, "FREE", CHIP_FREE);
+        if (m.vision) addChip(ctx, holder.chips, "VISION", CHIP_VISION);
+        if (descLower.contains("reasoning")) addChip(ctx, holder.chips, "REASON", CHIP_REASON);
+        if (descLower.contains("coding") || descLower.contains("code")) addChip(ctx, holder.chips, "CODE", CHIP_CODE);
+        if (descLower.contains("tools") || descLower.contains("agentic")) addChip(ctx, holder.chips, "TOOLS", CHIP_TOOLS);
 
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) listener.onPick(m.id, holder.getAdapterPosition());
         });
     }
 
-    private void addChip(Context ctx, LinearLayout container, String label, boolean free) {
+    private void addChip(Context ctx, LinearLayout container, String label, int type) {
         TextView chip = (TextView) LayoutInflater.from(ctx).inflate(R.layout.item_chip, container, false);
         chip.setText(label);
-        if (free) {
-            chip.setBackgroundResource(R.drawable.bg_chip_free);
-            chip.setTextColor(ctx.getResources().getColor(R.color.nova_primary));
+        int bgRes;
+        int textColor;
+        switch (type) {
+            case CHIP_FREE:
+                bgRes = R.drawable.bg_chip_free;
+                textColor = ctx.getResources().getColor(R.color.nova_primary);
+                break;
+            case CHIP_VISION:
+                bgRes = R.drawable.bg_chip_vision;
+                textColor = 0xFF8AB4D8;
+                break;
+            case CHIP_REASON:
+                bgRes = R.drawable.bg_chip_reason;
+                textColor = 0xFFC4A8E0;
+                break;
+            case CHIP_CODE:
+                bgRes = R.drawable.bg_chip_code;
+                textColor = 0xFF8AD4A0;
+                break;
+            case CHIP_TOOLS:
+                bgRes = R.drawable.bg_chip_tools;
+                textColor = 0xFF8AC4D4;
+                break;
+            default:
+                bgRes = R.drawable.bg_chip;
+                textColor = ctx.getResources().getColor(R.color.text_secondary_dark);
+                break;
         }
+        chip.setBackgroundResource(bgRes);
+        chip.setTextColor(textColor);
         container.addView(chip);
     }
 

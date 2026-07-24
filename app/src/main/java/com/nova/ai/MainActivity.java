@@ -291,18 +291,25 @@ public class MainActivity extends AppCompatActivity {
         activeSheet.setCancelable(true);
         activeSheet.setCanceledOnTouchOutside(true);
 
-        android.view.WindowManager.LayoutParams lp = activeSheet.getWindow().getAttributes();
-        lp.width = android.view.ViewGroup.LayoutParams.MATCH_PARENT;
-        activeSheet.getWindow().setAttributes(lp);
-        activeSheet.getWindow().setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
+        int dp = (int) getResources().getDisplayMetrics().density;
+        sheetView.setPadding(16 * dp, 0, 16 * dp, 0);
+
+        android.view.Window win = activeSheet.getWindow();
+        if (win != null) {
+            win.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
+            android.view.WindowManager.LayoutParams lp = win.getAttributes();
+            lp.width = android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+            lp.dimAmount = 0.5f;
+            win.setAttributes(lp);
+            win.setDimAmount(0.5f);
+            win.setLayout(android.view.ViewGroup.LayoutParams.MATCH_PARENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
+        }
 
         activeSheet.setOnShowListener(d -> {
-            int dp = (int) (1 * getResources().getDisplayMetrics().density);
             int maxH = 380 * dp;
             int count = models.size();
-            int itemH = (int) (72 * dp);
-            int headerH = (int) (64 * dp);
-            int desired = headerH + count * itemH + (int)(20 * dp);
+            int itemH = (int) (82 * dp);
+            int desired = count * itemH + (int)(32 * dp);
             rv.getLayoutParams().height = Math.min(desired, maxH);
             rv.requestLayout();
         });
