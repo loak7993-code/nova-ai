@@ -96,6 +96,14 @@
             android:lineSpacingExtra="5dp"
             android:textIsSelectable="true" />
 
+        <LinearLayout
+            android:id="@+id/tableContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:layout_marginTop="4dp" />
+
         <ProgressBar
             android:id="@+id/thinkingProgress"
             android:layout_width="22dp"

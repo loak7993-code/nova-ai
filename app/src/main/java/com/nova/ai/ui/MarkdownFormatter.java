@@ -44,17 +44,9 @@ public class MarkdownFormatter {
             }
 
             if (isTableRow(line) && i + 1 < lines.length && isTableSeparator(lines[i + 1])) {
-                java.util.List<String[]> tableRows = new java.util.ArrayList<>();
-                int j = i;
-                while (j < lines.length && isTableRow(lines[j])) {
-                    tableRows.add(parseRow(lines[j]));
-                    j++;
-                }
-                if (tableRows.size() >= 2) {
-                    appendTable(out, tableRows);
-                    i = j - 1;
-                    continue;
-                }
+                while (i < lines.length && isTableRow(lines[i])) i++;
+                if (i < lines.length) out.append("\n");
+                continue;
             }
 
             if (line.startsWith("# ")) { appendHeading(out, line.substring(2), 1.6f, true); continue; }
