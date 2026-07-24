@@ -10,10 +10,10 @@
 
 [![F-Droid](https://img.shields.io/badge/F--Droid-Install-blue?logo=f-droid)](https://loak7993-code.github.io/nova-ai-fdroid/repo)
 [![License: GPL-3.0](https://img.shields.io/badge/License-GPL--3.0--or--later-blue.svg)](LICENSE)
-[![API: models.dev](https://img.shields.io/badge/API-models.dev-orange)](https://models.dev)
+[![API: OpenCode Zen](https://img.shields.io/badge/API-OpenCode%20Zen-amber)](https://opencode.ai/zen)
 [![Android 7.0+](https://img.shields.io/badge/Android-7.0%2B-green?logo=android)](https://developer.android.com)
 
-A fast, lightweight, open-source AI chat app for Android that connects to any OpenAI-compatible API. Works out of the box with [OpenCode Zen](https://opencode.ai/zen) free models — no API key required. No tracking. No ads. No telemetry. No proprietary SDKs.
+A fast, lightweight, open-source AI chat app for Android that connects to [OpenCode Zen](https://opencode.ai/zen) free models out of the box — no API key required. Also works with any OpenAI-compatible API. No tracking. No ads. No telemetry. No proprietary SDKs.
 
 **Multi-model · Streaming · Tool calling · Image vision · Web search · Markdown**
 
@@ -106,12 +106,11 @@ Nova AI comes pre-configured with [OpenCode Zen](https://opencode.ai/zen) free m
 
 ### 2. (Optional) Use a different provider
 
-Nova AI works with any OpenAI-compatible API:
+Nova AI also works with any other OpenAI-compatible API:
 
-1. Go to [models.dev](https://models.dev) or [opencode.ai/zen](https://opencode.ai/zen)
-2. Find a model and provider
-3. Sign up and get an API key (if using paid models)
-4. Note the provider's API base URL
+1. Find a model and provider (e.g. on [opencode.ai/zen](https://opencode.ai/zen))
+2. Sign up and get an API key (if using paid models)
+3. Note the provider's API base URL
 
 ### 3. Configure Nova AI
 
@@ -317,7 +316,7 @@ Geist font by Vercel is licensed under the [SIL Open Font License](app/src/main/
 
 ## Acknowledgments
 
-- [models.dev](https://models.dev) for the open database of AI models and providers
+- [OpenCode Zen](https://opencode.ai/zen) for the free AI models that power Nova AI out of the box
 - [SearXNG](https://searxng.org) for the privacy-respecting search engine
 - [Geist](https://vercel.com/font) by Vercel for the beautiful font
 - [OkHttp](https://square.github.io/okhttp/) by Square for HTTP

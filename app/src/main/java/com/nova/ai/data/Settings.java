@@ -61,10 +61,6 @@ public class Settings {
             apiBase = "https://opencode.ai/zen/v1";
             changed = true;
         }
-        if (apiBase.contains("api.wandb.ai") || apiBase.contains("inference.wandb.ai")) {
-            apiBase = "https://opencode.ai/zen/v1";
-            changed = true;
-        }
         if (model == null || model.isEmpty()) {
             model = "big-pickle";
             changed = true;
