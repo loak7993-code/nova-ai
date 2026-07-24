@@ -12,12 +12,12 @@
 
     <TextView
         android:id="@+id/modelAvatar"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="38dp"
+        android:layout_height="38dp"
         android:background="@drawable/bg_model_avatar"
         android:gravity="center"
         android:textColor="@color/nova_primary"
-        android:textSize="18sp"
+        android:textSize="17sp"
         android:textStyle="bold" />
 
     <LinearLayout
@@ -25,14 +25,14 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical"
-        android:layout_marginStart="12dp">
+        android:layout_marginStart="10dp">
 
         <TextView
             android:id="@+id/modelName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/text_primary_dark"
-            android:textSize="15sp"
+            android:textSize="14.5sp"
             android:textStyle="bold"
             android:maxLines="1"
             android:ellipsize="end" />
@@ -42,16 +42,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="6dp" />
+            android:layout_marginTop="5dp" />
 
     </LinearLayout>
 
     <ImageView
         android:id="@+id/modelCheck"
-        android:layout_width="22dp"
-        android:layout_height="22dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:src="@drawable/ic_check"
+        android:tint="@color/nova_primary"
         android:visibility="invisible"
-        android:layout_marginStart="8dp" />
+        android:layout_marginStart="6dp" />
 
 </LinearLayout>
