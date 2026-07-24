@@ -39,7 +39,7 @@ public class MarkdownFormatter {
             }
 
             if (inCodeBlock) {
-                codeBuffer.append(line).append("\n");
+                codeBuffer.append(expandTabs(line)).append("\n");
                 continue;
             }
 
@@ -97,6 +97,24 @@ public class MarkdownFormatter {
         }
 
         return out;
+    }
+
+    private static String expandTabs(String line) {
+        if (line.indexOf('\t') < 0) return line;
+        StringBuilder sb = new StringBuilder(line.length() + 8);
+        int col = 0;
+        for (int i = 0; i < line.length(); i++) {
+            char c = line.charAt(i);
+            if (c == '\t') {
+                int spaces = 4 - (col % 4);
+                for (int s = 0; s < spaces; s++) sb.append(' ');
+                col += spaces;
+            } else {
+                sb.append(c);
+                col++;
+            }
+        }
+        return sb.toString();
     }
 
     private static boolean isTableSeparatorLine(String[] lines, int i) {
