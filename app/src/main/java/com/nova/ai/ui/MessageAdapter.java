@@ -74,6 +74,15 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     @Override
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position, @NonNull List<Object> payloads) {
+        if (!payloads.isEmpty() && payloads.contains("stream")) {
+            bindStreaming(holder, position);
+        } else {
+            onBindViewHolder(holder, position);
+        }
+    }
+
+    @Override
     public int getItemCount() { return messages.size(); }
 
     private void copyToClipboard(String label, String text) {
@@ -285,5 +294,36 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         void bind(Message m) { text.setText(m.content); }
     }
 
-    public void updateStreaming(int position) { notifyItemChanged(position); }
+    public void updateStreaming(int position) {
+        notifyItemChanged(position, "stream");
+    }
+
+    public void bindStreaming(RecyclerView.ViewHolder holder, int position) {
+        if (holder instanceof AiVH && position < messages.size()) {
+            AiVH vh = (AiVH) holder;
+            Message m = messages.get(position);
+            String reasoning = m.reasoning == null ? "" : m.reasoning;
+            String content = m.content == null ? "" : m.content;
+
+            if (content.isEmpty()) {
+                vh.text.setText("");
+            } else {
+                vh.text.setText(MarkdownFormatter.format(content));
+            }
+
+            if (!reasoning.isEmpty()) {
+                vh.thinkingSection.setVisibility(View.VISIBLE);
+                vh.thinkingText.setText(reasoning);
+                if (m.streaming || m.thinking) {
+                    vh.thinkingSpinner.setVisibility(View.VISIBLE);
+                    vh.thinkingLabel.setText("Thinking");
+                } else {
+                    vh.thinkingSpinner.setVisibility(View.GONE);
+                    vh.thinkingLabel.setText("Thought process");
+                }
+            } else {
+                vh.thinkingSection.setVisibility(View.GONE);
+            }
+        }
+    }
 }

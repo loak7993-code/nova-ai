@@ -113,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         messagesList.setLayoutManager(new LinearLayoutManager(this));
+        messagesList.setItemAnimator(null);
         messageAdapter = new MessageAdapter(this, current == null ? new java.util.ArrayList<>() : current.messages);
         messageAdapter.setActionListener(makeListener());
         messagesList.setAdapter(messageAdapter);
@@ -201,6 +202,7 @@ public class MainActivity extends AppCompatActivity {
         messageAdapter = new MessageAdapter(this, current.messages);
         messageAdapter.setActionListener(makeListener());
         messagesList.setAdapter(messageAdapter);
+        messagesList.setItemAnimator(null);
         updateEmptyState();
         scrollToEnd();
     }
@@ -215,6 +217,7 @@ public class MainActivity extends AppCompatActivity {
         messageAdapter = new MessageAdapter(this, current.messages);
         messageAdapter.setActionListener(makeListener());
         messagesList.setAdapter(messageAdapter);
+        messagesList.setItemAnimator(null);
         updateEmptyState();
         refreshConversations();
     }
