@@ -212,15 +212,4 @@
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/bottomVersionTag"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textColor="@color/text_secondary_dark"
-        android:textSize="10sp"
-        android:paddingTop="2dp"
-        android:paddingBottom="4dp"
-        android:background="@color/bg_dark" />
-
 </LinearLayout>

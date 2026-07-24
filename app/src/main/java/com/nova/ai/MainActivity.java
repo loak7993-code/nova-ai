@@ -94,8 +94,6 @@ public class MainActivity extends AppCompatActivity {
         settingsButton = findViewById(R.id.settingsButton);
         drawerVersion = findViewById(R.id.drawerVersion);
         if (drawerVersion != null) drawerVersion.setText("v" + BuildConfig.VERSION_NAME);
-        TextView bottomVersion = findViewById(R.id.bottomVersionTag);
-        if (bottomVersion != null) bottomVersion.setText("Nova AI · v" + BuildConfig.VERSION_NAME);
 
         findViewById(R.id.menuButton).setOnClickListener(v -> drawer.openDrawer(GravityCompat.START));
         findViewById(R.id.newChatTopButton).setOnClickListener(v -> newChat());
@@ -246,7 +244,7 @@ public class MainActivity extends AppCompatActivity {
         if (model == null || model.isEmpty()) model = "big-pickle";
         com.nova.ai.data.ModelInfo info = com.nova.ai.data.ModelRegistry.find(model);
         String version = BuildConfig.VERSION_NAME;
-        if (toolbarSubtitle != null) toolbarSubtitle.setText("v" + version + "  ·  " + info.name);
+        if (toolbarSubtitle != null) toolbarSubtitle.setText(info.name);
         com.google.android.material.button.MaterialButton msb = findViewById(R.id.modelSwitchButton);
         if (msb != null) msb.setText(info.name);
     }
