@@ -68,6 +68,11 @@ public class MainActivity extends AppCompatActivity {
     private View attachmentPreview;
     private ImageView attachmentThumb;
 
+    private android.os.Handler uiThrottle = new android.os.Handler();
+    private boolean uiUpdatePending = false;
+    private int uiStreamingIndex = -1;
+    private Message uiStreamingMsg = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -389,6 +394,9 @@ public class MainActivity extends AppCompatActivity {
 
         cancelled = new AtomicBoolean(false);
         final int index = aiIndex;
+        uiStreamingIndex = index;
+        uiStreamingMsg = aiMsg;
+        uiUpdatePending = false;
 
         currentCall = ai.send(current, aiMsg, cancelled, new AiClient.Callback() {
             @Override
@@ -396,8 +404,7 @@ public class MainActivity extends AppCompatActivity {
                 runOnUiThread(() -> {
                     if (aiMsg.reasoning == null) aiMsg.reasoning = "";
                     aiMsg.reasoning += delta;
-                    messageAdapter.updateStreaming(index);
-                    scrollToEnd();
+                    throttledUpdate();
                 });
             }
 
@@ -407,8 +414,7 @@ public class MainActivity extends AppCompatActivity {
                     aiMsg.thinking = false;
                     if (aiMsg.content == null) aiMsg.content = "";
                     aiMsg.content += delta;
-                    messageAdapter.updateStreaming(index);
-                    scrollToEnd();
+                    throttledUpdate();
                 });
             }
 
@@ -441,6 +447,8 @@ public class MainActivity extends AppCompatActivity {
             public void onComplete(String fullText, String fullReasoning) {
                 runOnUiThread(() -> {
                     if (!responding) return;
+                    uiThrottle.removeCallbacksAndMessages(null);
+                    uiUpdatePending = false;
                     aiMsg.thinking = false;
                     aiMsg.streaming = false;
                     if (aiMsg.content == null || aiMsg.content.isEmpty()) {
@@ -460,6 +468,8 @@ public class MainActivity extends AppCompatActivity {
                     storage.update(current);
                     responding = false;
                     currentCall = null;
+                    uiStreamingIndex = -1;
+                    uiStreamingMsg = null;
                     updateSendButton();
                     refreshConversations();
                     updateEmptyState();
@@ -470,6 +480,10 @@ public class MainActivity extends AppCompatActivity {
             public void onError(int httpCode, String message) {
                 runOnUiThread(() -> {
                     if (!responding) return;
+                    uiThrottle.removeCallbacksAndMessages(null);
+                    uiUpdatePending = false;
+                    uiStreamingIndex = -1;
+                    uiStreamingMsg = null;
                     if (index < current.messages.size() && current.messages.get(index) == aiMsg) {
                         current.messages.remove(index);
                         messageAdapter.notifyItemRemoved(index);
@@ -501,6 +515,20 @@ public class MainActivity extends AppCompatActivity {
         int lastVisible = lm.findLastCompletelyVisibleItemPosition();
         int total = messageAdapter.getItemCount() - 1;
         return lastVisible >= total - 2;
+    }
+
+    private void throttledUpdate() {
+        if (uiUpdatePending) return;
+        uiUpdatePending = true;
+        uiThrottle.postDelayed(() -> {
+            uiUpdatePending = false;
+            if (uiStreamingIndex >= 0 && uiStreamingMsg != null) {
+                messageAdapter.updateStreaming(uiStreamingIndex);
+                if (isNearBottom()) {
+                    messagesList.scrollToPosition(messageAdapter.getItemCount() - 1);
+                }
+            }
+        }, 80);
     }
 
     private void scrollToEnd() {
