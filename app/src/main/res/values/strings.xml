@@ -16,7 +16,7 @@
     <string name="edit">Edit</string>
     <string name="attach">Attach file</string>
     <string name="image_attached">Image attached</string>
-    <string name="err_no_vision">%1$s doesn\'t support images. Switch to Kimi K2.7 Code?</string>
+    <string name="err_no_vision">%1$s doesn\'t support images. Switch to a vision-capable model?</string>
     <string name="cancel">Cancel</string>
     <string name="save">Save</string>
     <string name="clear_all">Clear all chats</string>
@@ -47,8 +47,19 @@
     <string name="settings_saved">Settings saved</string>
 
     <string name="default_api_base"></string>
-    <string name="default_model">zhipuai/glm-5.2</string>
+    <string name="default_model">big-pickle</string>
     <string name="default_system_prompt">You are Nova, a helpful, friendly AI assistant. Provide clear, concise, well-formatted answers using Markdown when useful.</string>
+
+    <string name="choose_provider">Providers</string>
+    <string name="fetch_models">Fetch Models</string>
+    <string name="fetching_providers">Fetching providers from models.dev…</string>
+    <string name="fetching_models">Fetching models from provider…</string>
+    <string name="select_provider">Select Provider</string>
+    <string name="select_model">Select Model</string>
+    <string name="search_providers">Search providers…</string>
+    <string name="search_models">Search models…</string>
+    <string name="loading">Loading…</string>
+    <string name="no_models">No models returned. Check your API key and URL.</string>
 
     <string name="err_no_api_key">Set your API key in Settings first.</string>
     <string name="err_network">Network error: %1$s</string>

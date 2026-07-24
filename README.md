@@ -25,6 +25,7 @@ A fast, lightweight, open-source AI chat app for Android that connects to [OpenC
 
 ### Chat
 - **Multi-model support** — switch between Big Pickle, DeepSeek V4, MiMo V2.5, Nemotron 3 Ultra, North Mini Code, GLM 5.2, MiniMax M3, and Kimi K2.7 Code on the fly
+- **Browse 80+ providers from models.dev** — pick any OpenAI-compatible provider, auto-fill API URL, fetch available models
 - **Free models work with no API key** — OpenCode Zen is pre-configured
 - **Streaming responses** — answers appear token by token as they generate
 - **Collapsible reasoning display** — see the model's thinking process with a tap
@@ -104,13 +105,19 @@ The APK will be at `app/build/outputs/apk/release/app-release-unsigned.apk`.
 
 Nova AI comes pre-configured with [OpenCode Zen](https://opencode.ai/zen) free models. Just open the app and start chatting — no API key required.
 
-### 2. (Optional) Use a different provider
+### 2. (Optional) Browse providers from models.dev
 
-Nova AI also works with any other OpenAI-compatible API:
+Nova AI can browse 80+ OpenAI-compatible providers from [models.dev](https://models.dev):
 
-1. Find a model and provider (e.g. on [opencode.ai/zen](https://opencode.ai/zen))
-2. Sign up and get an API key (if using paid models)
-3. Note the provider's API base URL
+1. Open Settings → tap **Providers** next to the API base URL
+2. Search and pick a provider (auto-fills the API base URL)
+3. Enter your API key
+4. Tap **Fetch Models** to load available models from the provider
+5. Pick a model from the list
+
+You can also manually enter any OpenAI-compatible API base URL and key.
+
+### 3. (Optional) Use a different provider manually
 
 ### 3. Configure Nova AI
 

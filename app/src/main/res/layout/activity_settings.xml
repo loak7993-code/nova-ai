@@ -47,17 +47,38 @@
                 android:textSize="13sp"
                 android:layout_marginBottom="6dp" />
 
-            <EditText
-                android:id="@+id/apiBaseUrl"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_input"
-                android:textColor="@color/text_primary_dark"
-                android:textColorHint="@color/text_secondary_dark"
-                android:textSize="15sp"
-                android:inputType="textUri"
-                android:singleLine="true"
-                android:padding="14dp" />
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <EditText
+                    android:id="@+id/apiBaseUrl"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_input"
+                    android:textColor="@color/text_primary_dark"
+                    android:textColorHint="@color/text_secondary_dark"
+                    android:textSize="15sp"
+                    android:inputType="textUri"
+                    android:singleLine="true"
+                    android:padding="14dp" />
+
+                <Button
+                    android:id="@+id/btnChooseProvider"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/choose_provider"
+                    android:textAllCaps="false"
+                    android:textSize="13sp"
+                    android:textColor="@color/nova_primary"
+                    android:background="@android:color/transparent"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="4dp"
+                    android:minWidth="0dp" />
+            </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -80,14 +101,35 @@
                 android:singleLine="true"
                 android:padding="14dp" />
 
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/pref_model"
-                android:textColor="@color/text_secondary_dark"
-                android:textSize="13sp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
                 android:layout_marginTop="16dp"
-                android:layout_marginBottom="6dp" />
+                android:layout_marginBottom="6dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/pref_model"
+                    android:textColor="@color/text_secondary_dark"
+                    android:textSize="13sp" />
+
+                <Button
+                    android:id="@+id/btnFetchModels"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/fetch_models"
+                    android:textAllCaps="false"
+                    android:textSize="13sp"
+                    android:textColor="@color/nova_primary"
+                    android:background="@android:color/transparent"
+                    android:minWidth="0dp"
+                    android:paddingStart="0dp"
+                    android:paddingEnd="0dp" />
+            </LinearLayout>
 
             <AutoCompleteTextView
                 android:id="@+id/modelSpinner"
