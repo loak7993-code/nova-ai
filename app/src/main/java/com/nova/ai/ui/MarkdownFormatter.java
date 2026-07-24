@@ -43,22 +43,17 @@ public class MarkdownFormatter {
                 continue;
             }
 
-            if (isTableSeparatorLine(lines, i)) {
+            if (isTableRow(line) && i + 1 < lines.length && isTableSeparator(lines[i + 1])) {
                 java.util.List<String[]> tableRows = new java.util.ArrayList<>();
-                int headerIdx = i - 1;
-                int bodyIdx = i + 1;
-                while (headerIdx >= 0 && lines[headerIdx].trim().isEmpty()) headerIdx--;
-                if (headerIdx >= 0 && isTableRow(lines[headerIdx])) {
-                    tableRows.add(parseRow(lines[headerIdx]));
-                    while (bodyIdx < lines.length && isTableRow(lines[bodyIdx])) {
-                        tableRows.add(parseRow(lines[bodyIdx]));
-                        bodyIdx++;
-                    }
-                    if (tableRows.size() >= 2) {
-                        appendTable(out, tableRows);
-                        i = bodyIdx - 1;
-                        continue;
-                    }
+                int j = i;
+                while (j < lines.length && isTableRow(lines[j])) {
+                    tableRows.add(parseRow(lines[j]));
+                    j++;
+                }
+                if (tableRows.size() >= 2) {
+                    appendTable(out, tableRows);
+                    i = j - 1;
+                    continue;
                 }
             }
 
@@ -117,11 +112,11 @@ public class MarkdownFormatter {
         return sb.toString();
     }
 
-    private static boolean isTableSeparatorLine(String[] lines, int i) {
-        if (i <= 0 || i >= lines.length) return false;
-        String line = lines[i].trim();
-        if (!line.contains("|") || !line.contains("-")) return false;
-        String stripped = line.replaceAll("[|: \\-]", "");
+    private static boolean isTableSeparator(String line) {
+        if (line == null) return false;
+        String t = line.trim();
+        if (!t.contains("|") && !t.contains("-")) return false;
+        String stripped = t.replaceAll("[|: \\-]", "");
         return stripped.isEmpty();
     }
 
@@ -145,49 +140,46 @@ public class MarkdownFormatter {
         int[] widths = new int[cols];
         for (String[] r : rows) {
             for (int c = 0; c < r.length && c < cols; c++) {
-                widths[c] = Math.max(widths[c], r[c].length());
+                widths[c] = Math.max(widths[c], stripMarkdown(r[c]).length());
             }
         }
 
         int start = out.length();
         if (start > 0 && out.charAt(start - 1) != '\n') out.append("\n");
-
         start = out.length();
-        String[] header = rows.get(0);
-        out.append(formatRow(header, widths)).append("\n");
-        out.append(formatSeparator(widths)).append("\n");
-        for (int r = 1; r < rows.size(); r++) {
-            out.append(formatRow(rows.get(r), widths));
-            if (r < rows.size() - 1) out.append("\n");
+
+        for (int r = 0; r < rows.size(); r++) {
+            String[] cells = rows.get(r);
+            int rowStart = out.length();
+            for (int c = 0; c < cols; c++) {
+                String cell = c < cells.length ? cells[c] : "";
+                String display = stripMarkdown(cell);
+                int cellStart = out.length();
+                out.append(padRight(display, widths[c]));
+                applyInline(out, cellStart);
+                if (c < cols - 1) out.append(" | ");
+            }
+            out.setSpan(new TypefaceSpan("monospace"), rowStart, out.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            out.append("\n");
+            if (r == 0) {
+                int sepStart = out.length();
+                StringBuilder sep = new StringBuilder();
+                for (int c = 0; c < cols; c++) {
+                    for (int w = 0; w < widths[c]; w++) sep.append("-");
+                    if (c < cols - 1) sep.append("-+-");
+                }
+                out.append(sep.toString()).append("\n");
+                out.setSpan(new TypefaceSpan("monospace"), sepStart, out.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            }
         }
 
-        out.setSpan(new TypefaceSpan("monospace"), start, out.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        out.setSpan(new BackgroundColorSpan(0xFF1A1715), start, out.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        out.setSpan(new ForegroundColorSpan(0xFFECECEC), start, out.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        if (out.length() > 0 && out.charAt(out.length() - 1) != '\n') out.append("\n");
+        out.setSpan(new BackgroundColorSpan(0xFF221E1B), start, out.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        if (out.length() > 0 && out.charAt(out.length() - 1) == '\n') out.delete(out.length() - 1, out.length());
+        out.append("\n");
     }
 
-    private static String formatRow(String[] cells, int[] widths) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(" ");
-        for (int c = 0; c < widths.length; c++) {
-            String cell = c < cells.length ? cells[c] : "";
-            sb.append(padRight(cell, widths[c]));
-            if (c < widths.length - 1) sb.append(" │ ");
-        }
-        sb.append(" ");
-        return sb.toString();
-    }
-
-    private static String formatSeparator(int[] widths) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(" ");
-        for (int c = 0; c < widths.length; c++) {
-            for (int w = 0; w < widths[c]; w++) sb.append("─");
-            if (c < widths.length - 1) sb.append("─┼─");
-        }
-        sb.append(" ");
-        return sb.toString();
+    private static String stripMarkdown(String s) {
+        return s.replaceAll("\\*\\*", "").replaceAll("\\*", "").replaceAll("`", "");
     }
 
     private static String padRight(String s, int width) {
