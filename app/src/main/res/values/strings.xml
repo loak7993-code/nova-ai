@@ -29,9 +29,9 @@
 
     <string name="pref_api_header">AI Provider</string>
     <string name="pref_api_base">API base URL</string>
-    <string name="pref_api_base_helper">OpenAI-compatible endpoint (W&amp;B Inference default)</string>
+    <string name="pref_api_base_helper">Any OpenAI-compatible endpoint from models.dev</string>
     <string name="pref_api_key">API key</string>
-    <string name="pref_api_key_helper">Create a key at wandb.ai/settings</string>
+    <string name="pref_api_key_helper">Get a free key from models.dev providers</string>
     <string name="pref_model">Model</string>
     <string name="pref_system_prompt">System prompt</string>
     <string name="pref_temperature">Temperature</string>
@@ -46,8 +46,8 @@
     <string name="pref_theme">Theme</string>
     <string name="settings_saved">Settings saved</string>
 
-    <string name="default_api_base">https://api.inference.wandb.ai/v1</string>
-    <string name="default_model">zai-org/GLM-5.2</string>
+    <string name="default_api_base"></string>
+    <string name="default_model">zhipuai/glm-5.2</string>
     <string name="default_system_prompt">You are Nova, a helpful, friendly AI assistant. Provide clear, concise, well-formatted answers using Markdown when useful.</string>
 
     <string name="err_no_api_key">Set your API key in Settings first.</string>

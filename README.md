@@ -10,10 +10,10 @@
 
 [![F-Droid](https://img.shields.io/badge/F--Droid-Install-blue?logo=f-droid)](https://loak7993-code.github.io/nova-ai-fdroid/repo)
 [![License: GPL-3.0](https://img.shields.io/badge/License-GPL--3.0--or--later-blue.svg)](LICENSE)
-[![API: W&B Inference](https://img.shields.io/badge/API-W%26B%20Inference-orange)](https://wandb.ai)
+[![API: models.dev](https://img.shields.io/badge/API-models.dev-orange)](https://models.dev)
 [![Android 7.0+](https://img.shields.io/badge/Android-7.0%2B-green?logo=android)](https://developer.android.com)
 
-A fast, lightweight, open-source AI chat app for Android that connects to the Weights & Biases Inference API. No tracking. No ads. No telemetry. No proprietary SDKs.
+A fast, lightweight, open-source AI chat app for Android that connects to any OpenAI-compatible API from [models.dev](https://models.dev). No tracking. No ads. No telemetry. No proprietary SDKs.
 
 **Multi-model · Streaming · Tool calling · Image vision · Web search · Markdown**
 
@@ -99,19 +99,24 @@ The APK will be at `app/build/outputs/apk/release/app-release-unsigned.apk`.
 
 ## Setup Guide
 
-### 1. Get a W&B Inference API Key
+### 1. Pick a provider from models.dev
 
-1. Create a free account at [wandb.ai](https://wandb.ai)
-2. Go to [Settings](https://wandb.ai/settings)
-3. Scroll to "API Keys" and create a new key (starts with `wandb_v1_`)
+1. Go to [models.dev](https://models.dev)
+2. Find a model (e.g. GLM-5.2, MiniMax-M3, Kimi K2.7 Code)
+3. Pick a provider — filter for free ones ($0.00)
+4. Sign up and get an API key
+5. Note the provider's API base URL (e.g. `https://kenari.id/v1`)
+
+**Recommended free provider**: [Kenari](https://kenari.id) offers all 3 models for free.
 
 ### 2. Configure Nova AI
 
 1. Open Nova AI
 2. Tap the **☰ menu** → **Settings**
-3. Paste your **API key**
-4. (Optional) Change the **model**, **system prompt**, or **temperature**
-5. Tap **Save**
+3. Enter the **API base URL** from your provider
+4. Paste your **API key**
+5. (Optional) Change the **model**, **system prompt**, or **temperature**
+6. Tap **Save**
 
 ### 3. (Optional) Enable Web Search
 
@@ -303,7 +308,7 @@ Geist font by Vercel is licensed under the [SIL Open Font License](app/src/main/
 
 ## Acknowledgments
 
-- [Weights & Biases](https://wandb.ai) for the Inference API
+- [models.dev](https://models.dev) for the open database of AI models and providers
 - [SearXNG](https://searxng.org) for the privacy-respecting search engine
 - [Geist](https://vercel.com/font) by Vercel for the beautiful font
 - [OkHttp](https://square.github.io/okhttp/) by Square for HTTP

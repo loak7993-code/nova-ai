@@ -57,7 +57,7 @@ public class SettingsActivity extends AppCompatActivity {
         String[] models = com.nova.ai.data.ModelRegistry.ids();
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.item_dropdown, models);
         model.setAdapter(adapter);
-        model.setText(s.model != null ? s.model : "zai-org/GLM-5.2", false);
+        model.setText(s.model != null ? s.model : "zhipuai/glm-5.2", false);
 
         float temp = s.temperature;
         if (temp < 0f) temp = 0f;
@@ -85,11 +85,11 @@ public class SettingsActivity extends AppCompatActivity {
     private void save() {
         Settings s = Settings.get();
         s.apiBase = TextUtils.isEmpty(apiBase.getText())
-                ? "https://api.inference.wandb.ai/v1"
+                ? ""
                 : apiBase.getText().toString().trim();
         s.apiKey = apiKey.getText() == null ? "" : apiKey.getText().toString().trim();
         s.model = TextUtils.isEmpty(model.getText())
-                ? "zai-org/GLM-5.2" : model.getText().toString().trim();
+                ? "zhipuai/glm-5.2" : model.getText().toString().trim();
         s.systemPrompt = TextUtils.isEmpty(systemPrompt.getText())
                 ? "" : systemPrompt.getText().toString().trim();
         s.temperature = temperatureBar.getProgress() / 10f;

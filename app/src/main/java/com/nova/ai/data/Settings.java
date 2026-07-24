@@ -45,9 +45,9 @@ public class Settings {
             "- Keep answers complete but tight. Don't pad. Don't repeat the question back.";
 
     private void load() {
-        apiBase = sp.getString("api_base", "https://api.inference.wandb.ai/v1");
+        apiBase = sp.getString("api_base", "");
         apiKey = sp.getString("api_key", "");
-        model = sp.getString("model", "zai-org/GLM-5.2");
+        model = sp.getString("model", "zhipuai/glm-5.2");
         systemPrompt = sp.getString("system_prompt", DEFAULT_SYSTEM_PROMPT);
         temperature = sp.getFloat("temperature", 0.7f);
         stream = sp.getBoolean("stream", true);
@@ -57,12 +57,22 @@ public class Settings {
 
     private void migrate() {
         boolean changed = false;
-        if (apiBase == null || (apiBase.contains("api.wandb.ai") && !apiBase.contains("inference"))) {
-            apiBase = "https://api.inference.wandb.ai/v1";
+        if (apiBase == null || apiBase.isEmpty()) {
+            apiBase = "";
+            changed = true;
+        }
+        if (apiBase.contains("api.wandb.ai") || apiBase.contains("inference.wandb.ai")) {
+            apiBase = "";
             changed = true;
         }
         if (model == null || model.isEmpty()) {
-            model = "zai-org/GLM-5.2";
+            model = "zhipuai/glm-5.2";
+            changed = true;
+        }
+        if (model.equals("zai-org/GLM-5.2") || model.equals("MiniMaxAI/MiniMax-M3") || model.equals("moonshotai/Kimi-K2.7-Code")) {
+            if (model.equals("zai-org/GLM-5.2")) model = "zhipuai/glm-5.2";
+            else if (model.equals("MiniMaxAI/MiniMax-M3")) model = "minimax/MiniMax-M3";
+            else if (model.equals("moonshotai/Kimi-K2.7-Code")) model = "moonshotai/kimi-k2.7-code";
             changed = true;
         }
         String oldPrompt = "You are Nova, a helpful, friendly AI assistant. Provide clear, concise, well-formatted answers using Markdown when useful.";

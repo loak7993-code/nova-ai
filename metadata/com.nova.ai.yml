@@ -12,7 +12,7 @@ Summary: Privacy-focused AI chat client with tool calling and web search
 
 Description: |
     Nova AI is a privacy-focused Android AI chat client that supports multiple
-    LLM models via the Weights & Biases Inference API.
+    LLM models via any OpenAI-compatible API from models.dev.
 
     Features:
     * Multi-model support: GLM-5.2, MiniMax M3, Kimi K2.7 Code
@@ -24,8 +24,8 @@ Description: |
     * Self-hosted SearXNG web search (no API key required)
     * No tracking, no telemetry, no ads, no proprietary SDKs
 
-    Users must provide their own W&B Inference API key. Web search requires
-    a self-hosted or public SearXNG instance URL.
+    Users must provide their own API key from any models.dev provider.
+    Web search requires a self-hosted or public SearXNG instance URL.
 
 RepoType: git
 Repo: https://github.com/loak7993-code/nova-ai
