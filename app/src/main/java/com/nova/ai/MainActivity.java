@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean uiUpdatePending = false;
     private int uiStreamingIndex = -1;
     private Message uiStreamingMsg = null;
+    private boolean userScrolledAway = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,6 +117,18 @@ public class MainActivity extends AppCompatActivity {
         messageAdapter = new MessageAdapter(this, current == null ? new java.util.ArrayList<>() : current.messages);
         messageAdapter.setActionListener(makeListener());
         messagesList.setAdapter(messageAdapter);
+
+        messagesList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView rv, int dx, int dy) {
+                if (dy < 0) {
+                    userScrolledAway = true;
+                }
+                if (isNearBottom()) {
+                    userScrolledAway = false;
+                }
+            }
+        });
 
         conversationAdapter = new ConversationAdapter(new ConversationAdapter.Listener() {
             @Override
@@ -416,6 +429,7 @@ public class MainActivity extends AppCompatActivity {
         current.add(aiMsg);
         int aiIndex = current.messages.size() - 1;
         messageAdapter.notifyItemInserted(aiIndex);
+        userScrolledAway = false;
         scrollToEnd();
         updateEmptyState();
 
@@ -551,7 +565,7 @@ public class MainActivity extends AppCompatActivity {
             uiUpdatePending = false;
             if (uiStreamingIndex >= 0 && uiStreamingMsg != null) {
                 messageAdapter.updateStreaming(uiStreamingIndex);
-                if (isNearBottom()) {
+                if (!userScrolledAway && isNearBottom()) {
                     messagesList.scrollToPosition(messageAdapter.getItemCount() - 1);
                 }
             }
@@ -561,7 +575,7 @@ public class MainActivity extends AppCompatActivity {
     private void scrollToEnd() {
         messagesList.post(() -> {
             if (messageAdapter.getItemCount() > 0) {
-                if (isNearBottom()) {
+                if (!userScrolledAway && isNearBottom()) {
                     messagesList.scrollToPosition(messageAdapter.getItemCount() - 1);
                 }
             }
