@@ -60,6 +60,12 @@
     <string name="search_models">Search models…</string>
     <string name="loading">Loading…</string>
     <string name="no_models">No models returned. Check your API key and URL.</string>
+    <string name="my_providers">My Providers</string>
+    <string name="add_provider">+ Add from models.dev</string>
+    <string name="active_provider">Active</string>
+    <string name="switch_to">Switch to</string>
+    <string name="remove_provider">Remove</string>
+    <string name="no_saved_providers">No saved providers yet. Tap "Add from models.dev" to browse.</string>
 
     <string name="err_no_api_key">Set your API key in Settings first.</string>
     <string name="err_network">Network error: %1$s</string>

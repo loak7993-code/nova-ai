@@ -28,6 +28,8 @@ import com.google.android.material.button.MaterialButton;
 import com.nova.ai.data.ChatStorage;
 import com.nova.ai.data.Conversation;
 import com.nova.ai.data.Message;
+import com.nova.ai.data.ProviderManager;
+import com.nova.ai.data.ProviderProfile;
 import com.nova.ai.data.Settings;
 import com.nova.ai.net.AiClient;
 import com.nova.ai.ui.ConversationAdapter;
@@ -243,27 +245,34 @@ public class MainActivity extends AppCompatActivity {
 
     private void showModelPicker() {
         String current = Settings.get().model;
-        java.util.List<com.nova.ai.data.ModelInfo> models = com.nova.ai.data.ModelRegistry.ALL;
+        String[] modelIds = com.nova.ai.data.Settings.modelsForActive();
 
         android.view.View sheetView = getLayoutInflater().inflate(R.layout.bottom_sheet_model_picker, null);
         android.widget.LinearLayout list = sheetView.findViewById(R.id.modelList);
 
-        for (int i = 0; i < models.size(); i++) {
-            com.nova.ai.data.ModelInfo m = models.get(i);
+        for (int i = 0; i < modelIds.length; i++) {
+            String mid = modelIds[i];
+            com.nova.ai.data.ModelInfo m = com.nova.ai.data.ModelRegistry.find(mid);
             android.view.View card = getLayoutInflater().inflate(R.layout.item_model_card, list, false);
             android.widget.TextView name = card.findViewById(R.id.modelName);
             android.widget.TextView desc = card.findViewById(R.id.modelDesc);
             android.widget.ImageView check = card.findViewById(R.id.modelCheck);
             name.setText(m.name);
             desc.setText(m.description);
-            boolean isActive = m.id.equals(current);
+            boolean isActive = mid.equals(current);
             if (isActive) {
                 card.setBackgroundResource(R.drawable.bg_model_card_selected);
                 check.setVisibility(android.view.View.VISIBLE);
             }
             card.setOnClickListener(v -> {
-                Settings.get().model = m.id;
+                Settings.get().model = mid;
                 Settings.get().save();
+                ProviderProfile active = ProviderManager.get().active();
+                if (active != null) {
+                    active.activeModel = mid;
+                    ProviderManager.get().updateModels(active.id,
+                            active.models != null ? active.models : new java.util.ArrayList<>(), mid);
+                }
                 updateModelDisplay();
                 Toast.makeText(this, m.name, Toast.LENGTH_SHORT).show();
                 dismissActiveSheet();

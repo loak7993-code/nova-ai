@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -20,6 +21,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.nova.ai.data.ChatStorage;
+import com.nova.ai.data.ProviderManager;
+import com.nova.ai.data.ProviderProfile;
 import com.nova.ai.data.Settings;
 import com.nova.ai.net.ProviderFetcher;
 import com.nova.ai.ui.PickerAdapter;
@@ -34,7 +37,8 @@ public class SettingsActivity extends AppCompatActivity {
     private SeekBar temperatureBar;
     private TextView temperatureValue;
     private Switch streamToggle;
-    private Button saveButton, clearAllButton, chooseProviderButton, fetchModelsButton;
+    private Button saveButton, clearAllButton, chooseProviderButton, fetchModelsButton, myProvidersButton;
+    private List<String> fetchedModels = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +62,7 @@ public class SettingsActivity extends AppCompatActivity {
         clearAllButton = findViewById(R.id.clearAllButton);
         chooseProviderButton = findViewById(R.id.btnChooseProvider);
         fetchModelsButton = findViewById(R.id.btnFetchModels);
+        myProvidersButton = findViewById(R.id.btnMyProviders);
 
         apiBase.setText(s.apiBase);
         apiKey.setText(s.apiKey);
@@ -65,7 +70,7 @@ public class SettingsActivity extends AppCompatActivity {
         streamToggle.setChecked(s.stream);
         searchUrl.setText(s.searchUrl != null ? s.searchUrl : "");
 
-        updateModelAdapter(com.nova.ai.data.ModelRegistry.ids());
+        updateModelAdapter(Settings.modelsForActive());
         model.setText(s.model != null ? s.model : "big-pickle", false);
 
         float temp = s.temperature;
@@ -91,6 +96,7 @@ public class SettingsActivity extends AppCompatActivity {
         clearAllButton.setOnClickListener(v -> showClearConfirm());
         chooseProviderButton.setOnClickListener(v -> showProviderPicker());
         fetchModelsButton.setOnClickListener(v -> fetchModelsFromProvider());
+        myProvidersButton.setOnClickListener(v -> showMyProviders());
     }
 
     private void updateModelAdapter(String[] ids) {
@@ -106,6 +112,58 @@ public class SettingsActivity extends AppCompatActivity {
         dialog.setCancelable(false);
         dialog.show();
         return dialog;
+    }
+
+    private void showMyProviders() {
+        BottomSheetDialog sheet = new BottomSheetDialog(this);
+        sheet.setContentView(R.layout.bottom_sheet_picker);
+
+        TextView title = sheet.findViewById(R.id.bsTitle);
+        EditText search = sheet.findViewById(R.id.bsSearch);
+        RecyclerView rv = sheet.findViewById(R.id.bsRecyclerView);
+
+        if (title != null) title.setText(R.string.my_providers);
+        if (search != null) search.setVisibility(android.view.View.GONE);
+        if (rv != null) {
+            rv.setLayoutManager(new LinearLayoutManager(this));
+            String activeId = ProviderManager.get().activeId();
+            List<ProviderProfile> profiles = ProviderManager.get().all();
+
+            PickerAdapter adapter = new PickerAdapter((item, pos) -> {
+                if ("__add__".equals(item.tag)) {
+                    sheet.dismiss();
+                    showProviderPicker();
+                    return;
+                }
+                Settings.switchProvider(item.tag);
+                reloadFromActive();
+                Toast.makeText(this, getString(R.string.switch_to) + " " + item.name, Toast.LENGTH_SHORT).show();
+                sheet.dismiss();
+            });
+
+            List<PickerAdapter.Item> items = new ArrayList<>();
+            for (ProviderProfile p : profiles) {
+                String sub = p.apiBase;
+                if (p.models != null && !p.models.isEmpty()) sub += "  ·  " + p.models.size() + " models";
+                items.add(new PickerAdapter.Item(p.name, sub, p.id, p.id.equals(activeId)));
+            }
+            items.add(new PickerAdapter.Item(getString(R.string.add_provider), "", "__add__", false));
+            adapter.setItems(items);
+            rv.setAdapter(adapter);
+        }
+        sheet.show();
+    }
+
+    private void reloadFromActive() {
+        ProviderProfile p = ProviderManager.get().active();
+        if (p == null) return;
+        apiBase.setText(p.apiBase);
+        apiKey.setText(p.apiKey);
+        String[] models = Settings.modelsForActive();
+        updateModelAdapter(models);
+        String activeModel = p.activeModel != null && !p.activeModel.isEmpty() ? p.activeModel : "big-pickle";
+        model.setText(activeModel, false);
+        fetchedModels = p.models;
     }
 
     private void showProviderPicker() {
@@ -143,15 +201,27 @@ public class SettingsActivity extends AppCompatActivity {
         if (rv != null) {
             rv.setLayoutManager(new LinearLayoutManager(this));
             PickerAdapter adapter = new PickerAdapter((item, pos) -> {
-                apiBase.setText(item.tag);
-                updateModelAdapter(com.nova.ai.data.ModelRegistry.ids());
-                Toast.makeText(this, item.name + ": " + item.tag, Toast.LENGTH_SHORT).show();
+                String name = item.name;
+                String url = item.tag;
+                ProviderProfile p = ProviderManager.get().findOrCreate(name, url, apiKey.getText().toString().trim());
+                if (ProviderManager.get().all().size() == 1) {
+                    ProviderManager.get().setActive(p.id);
+                }
+                ProviderManager.get().setActive(p.id);
+                Settings.switchProvider(p.id);
+                reloadFromActive();
+                Toast.makeText(this, name + ": " + url, Toast.LENGTH_SHORT).show();
                 sheet.dismiss();
             });
 
             List<PickerAdapter.Item> items = new ArrayList<>();
             for (ProviderFetcher.ProviderInfo p : providers) {
-                items.add(new PickerAdapter.Item(p.name, p.apiUrl, p.apiUrl, false));
+                boolean already = false;
+                for (ProviderProfile saved : ProviderManager.get().all()) {
+                    if (saved.apiBase.equals(p.apiUrl)) { already = true; break; }
+                }
+                String sub = p.apiUrl + (already ? "  ✓" : "");
+                items.add(new PickerAdapter.Item(p.name, sub, p.apiUrl, false));
             }
             adapter.setItems(items);
             rv.setAdapter(adapter);
@@ -185,6 +255,13 @@ public class SettingsActivity extends AppCompatActivity {
             public void onSuccess(List<String> models) {
                 runOnUiThread(() -> {
                     loading.dismiss();
+                    fetchedModels = models;
+                    String[] arr = models.toArray(new String[0]);
+                    updateModelAdapter(arr);
+                    ProviderProfile active = ProviderManager.get().active();
+                    if (active != null) {
+                        ProviderManager.get().updateModels(active.id, models, model.getText().toString());
+                    }
                     showModelSheet(models);
                 });
             }
@@ -214,6 +291,12 @@ public class SettingsActivity extends AppCompatActivity {
             String currentModel = model.getText() != null ? model.getText().toString() : "";
             PickerAdapter adapter = new PickerAdapter((item, pos) -> {
                 model.setText(item.name, false);
+                ProviderProfile active = ProviderManager.get().active();
+                if (active != null) {
+                    ProviderManager.get().updateModels(active.id,
+                            active.models != null ? active.models : new ArrayList<>(),
+                            item.name);
+                }
                 sheet.dismiss();
             });
 
@@ -275,6 +358,16 @@ public class SettingsActivity extends AppCompatActivity {
                 ? ""
                 : searchUrl.getText().toString().trim();
         s.save();
+
+        ProviderProfile active = ProviderManager.get().active();
+        if (active != null) {
+            active.apiBase = s.apiBase;
+            active.apiKey = s.apiKey;
+            active.activeModel = s.model;
+            if (fetchedModels != null) {
+                ProviderManager.get().updateModels(active.id, fetchedModels, s.model);
+            }
+        }
         Toast.makeText(this, R.string.settings_saved, Toast.LENGTH_SHORT).show();
         finish();
     }

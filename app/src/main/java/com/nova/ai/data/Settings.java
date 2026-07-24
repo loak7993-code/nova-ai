@@ -19,6 +19,7 @@ public class Settings {
 
     private Settings(Context ctx) {
         sp = ctx.getApplicationContext().getSharedPreferences(PREF, Context.MODE_PRIVATE);
+        ProviderManager.get(ctx).ensureDefault();
         load();
     }
 
@@ -45,9 +46,16 @@ public class Settings {
             "- Keep answers complete but tight. Don't pad. Don't repeat the question back.";
 
     private void load() {
-        apiBase = sp.getString("api_base", "https://opencode.ai/zen/v1");
-        apiKey = sp.getString("api_key", "");
-        model = sp.getString("model", "big-pickle");
+        ProviderProfile p = ProviderManager.get().active();
+        if (p != null) {
+            apiBase = p.apiBase;
+            apiKey = p.apiKey;
+            model = p.activeModel != null && !p.activeModel.isEmpty() ? p.activeModel : "big-pickle";
+        } else {
+            apiBase = "https://opencode.ai/zen/v1";
+            apiKey = "";
+            model = "big-pickle";
+        }
         systemPrompt = sp.getString("system_prompt", DEFAULT_SYSTEM_PROMPT);
         temperature = sp.getFloat("temperature", 0.7f);
         stream = sp.getBoolean("stream", true);
@@ -65,12 +73,6 @@ public class Settings {
             model = "big-pickle";
             changed = true;
         }
-        if (model.equals("zai-org/GLM-5.2") || model.equals("MiniMaxAI/MiniMax-M3") || model.equals("moonshotai/Kimi-K2.7-Code") || model.equals("zhipuai/glm-5.2") || model.equals("minimax/MiniMax-M3") || model.equals("moonshotai/kimi-k2.7-code")) {
-            if (model.equals("zai-org/GLM-5.2") || model.equals("zhipuai/glm-5.2")) model = "glm-5.2";
-            else if (model.equals("MiniMaxAI/MiniMax-M3") || model.equals("minimax/MiniMax-M3")) model = "minimax-m3";
-            else if (model.equals("moonshotai/Kimi-K2.7-Code") || model.equals("moonshotai/kimi-k2.7-code")) model = "kimi-k2.7-code";
-            changed = true;
-        }
         String oldPrompt = "You are Nova, a helpful, friendly AI assistant. Provide clear, concise, well-formatted answers using Markdown when useful.";
         if (oldPrompt.equals(systemPrompt) || systemPrompt == null || systemPrompt.trim().isEmpty()) {
             systemPrompt = DEFAULT_SYSTEM_PROMPT;
@@ -80,10 +82,14 @@ public class Settings {
     }
 
     public void save() {
+        ProviderProfile p = ProviderManager.get().active();
+        if (p != null) {
+            p.apiBase = apiBase;
+            p.apiKey = apiKey;
+            p.activeModel = model;
+            ProviderManager.get().findOrCreate(p.name, p.apiBase, p.apiKey).activeModel = model;
+        }
         sp.edit()
-                .putString("api_base", apiBase)
-                .putString("api_key", apiKey)
-                .putString("model", model)
                 .putString("system_prompt", systemPrompt)
                 .putFloat("temperature", temperature)
                 .putBoolean("stream", stream)
@@ -93,5 +99,23 @@ public class Settings {
 
     public boolean isConfigured() {
         return apiBase != null && !apiBase.trim().isEmpty();
+    }
+
+    public static String[] modelsForActive() {
+        ProviderProfile p = ProviderManager.get().active();
+        if (p != null && p.models != null && !p.models.isEmpty()) {
+            return p.models.toArray(new String[0]);
+        }
+        return ModelRegistry.ids();
+    }
+
+    public static void switchProvider(String id) {
+        ProviderManager.get().setActive(id);
+        ProviderProfile p = ProviderManager.get().active();
+        if (p != null && instance != null) {
+            instance.apiBase = p.apiBase;
+            instance.apiKey = p.apiKey;
+            instance.model = p.activeModel != null && !p.activeModel.isEmpty() ? p.activeModel : "big-pickle";
+        }
     }
 }

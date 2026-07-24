@@ -68,9 +68,14 @@ Builds:
     commit: v2.3.2
     gradle:
       - yes
-  - versionName: '2.3.3'
-    versionCode: 21
-    commit: v2.3.3
+  - versionName: '2.3.4'
+    versionCode: 22
+    commit: v2.3.4
+    gradle:
+      - yes
+  - versionName: '2.4'
+    versionCode: 23
+    commit: v2.4
     gradle:
       - yes
 
@@ -80,5 +85,5 @@ MaintainerNotes: |
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: '2.3.3'
-CurrentVersionCode: 21
+CurrentVersion: '2.4'
+CurrentVersionCode: 23

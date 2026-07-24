@@ -137,43 +137,46 @@ public class MarkdownFormatter {
         int cols = 0;
         for (String[] r : rows) cols = Math.max(cols, r.length);
 
-        int[] widths = new int[cols];
-        for (String[] r : rows) {
-            for (int c = 0; c < r.length && c < cols; c++) {
-                widths[c] = Math.max(widths[c], stripMarkdown(r[c]).length());
-            }
-        }
-
         int start = out.length();
         if (start > 0 && out.charAt(start - 1) != '\n') out.append("\n");
         start = out.length();
 
+        int headerBg = 0xFF3A3026;
+        int rowBg1 = 0xFF221E1B;
+        int rowBg2 = 0xFF2B2622;
+        int dividerColor = 0xFF3A322C;
+
         for (int r = 0; r < rows.size(); r++) {
             String[] cells = rows.get(r);
+            boolean isHeader = (r == 0);
+
             int rowStart = out.length();
+            out.append(" ");
             for (int c = 0; c < cols; c++) {
                 String cell = c < cells.length ? cells[c] : "";
                 String display = stripMarkdown(cell);
                 int cellStart = out.length();
-                out.append(padRight(display, widths[c]));
+                out.append(display);
                 applyInline(out, cellStart);
-                if (c < cols - 1) out.append(" | ");
+                if (c < cols - 1) out.append("  |  ");
             }
-            out.setSpan(new TypefaceSpan("monospace"), rowStart, out.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            out.append(" ");
+
+            int bg = isHeader ? headerBg : (r % 2 == 0 ? rowBg1 : rowBg2);
+            out.setSpan(new BackgroundColorSpan(bg), rowStart, out.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            if (isHeader) {
+                out.setSpan(new StyleSpan(Typeface.BOLD), rowStart, out.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                out.setSpan(new ForegroundColorSpan(0xFFEDE6E0), rowStart, out.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            }
             out.append("\n");
-            if (r == 0) {
-                int sepStart = out.length();
-                StringBuilder sep = new StringBuilder();
-                for (int c = 0; c < cols; c++) {
-                    for (int w = 0; w < widths[c]; w++) sep.append("-");
-                    if (c < cols - 1) sep.append("-+-");
-                }
-                out.append(sep.toString()).append("\n");
-                out.setSpan(new TypefaceSpan("monospace"), sepStart, out.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+            if (isHeader) {
+                int divStart = out.length();
+                out.append("\n");
+                out.setSpan(new BackgroundColorSpan(dividerColor), divStart, out.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
         }
 
-        out.setSpan(new BackgroundColorSpan(0xFF221E1B), start, out.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         if (out.length() > 0 && out.charAt(out.length() - 1) == '\n') out.delete(out.length() - 1, out.length());
         out.append("\n");
     }
