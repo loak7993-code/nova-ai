@@ -45,9 +45,9 @@ public class Settings {
             "- Keep answers complete but tight. Don't pad. Don't repeat the question back.";
 
     private void load() {
-        apiBase = sp.getString("api_base", "");
+        apiBase = sp.getString("api_base", "https://opencode.ai/zen/v1");
         apiKey = sp.getString("api_key", "");
-        model = sp.getString("model", "zhipuai/glm-5.2");
+        model = sp.getString("model", "big-pickle");
         systemPrompt = sp.getString("system_prompt", DEFAULT_SYSTEM_PROMPT);
         temperature = sp.getFloat("temperature", 0.7f);
         stream = sp.getBoolean("stream", true);
@@ -58,21 +58,21 @@ public class Settings {
     private void migrate() {
         boolean changed = false;
         if (apiBase == null || apiBase.isEmpty()) {
-            apiBase = "";
+            apiBase = "https://opencode.ai/zen/v1";
             changed = true;
         }
         if (apiBase.contains("api.wandb.ai") || apiBase.contains("inference.wandb.ai")) {
-            apiBase = "";
+            apiBase = "https://opencode.ai/zen/v1";
             changed = true;
         }
         if (model == null || model.isEmpty()) {
-            model = "zhipuai/glm-5.2";
+            model = "big-pickle";
             changed = true;
         }
-        if (model.equals("zai-org/GLM-5.2") || model.equals("MiniMaxAI/MiniMax-M3") || model.equals("moonshotai/Kimi-K2.7-Code")) {
-            if (model.equals("zai-org/GLM-5.2")) model = "zhipuai/glm-5.2";
-            else if (model.equals("MiniMaxAI/MiniMax-M3")) model = "minimax/MiniMax-M3";
-            else if (model.equals("moonshotai/Kimi-K2.7-Code")) model = "moonshotai/kimi-k2.7-code";
+        if (model.equals("zai-org/GLM-5.2") || model.equals("MiniMaxAI/MiniMax-M3") || model.equals("moonshotai/Kimi-K2.7-Code") || model.equals("zhipuai/glm-5.2") || model.equals("minimax/MiniMax-M3") || model.equals("moonshotai/kimi-k2.7-code")) {
+            if (model.equals("zai-org/GLM-5.2") || model.equals("zhipuai/glm-5.2")) model = "glm-5.2";
+            else if (model.equals("MiniMaxAI/MiniMax-M3") || model.equals("minimax/MiniMax-M3")) model = "minimax-m3";
+            else if (model.equals("moonshotai/Kimi-K2.7-Code") || model.equals("moonshotai/kimi-k2.7-code")) model = "kimi-k2.7-code";
             changed = true;
         }
         String oldPrompt = "You are Nova, a helpful, friendly AI assistant. Provide clear, concise, well-formatted answers using Markdown when useful.";
@@ -96,6 +96,6 @@ public class Settings {
     }
 
     public boolean isConfigured() {
-        return apiKey != null && !apiKey.trim().isEmpty();
+        return apiBase != null && !apiBase.trim().isEmpty();
     }
 }

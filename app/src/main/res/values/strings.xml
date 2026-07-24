@@ -29,9 +29,9 @@
 
     <string name="pref_api_header">AI Provider</string>
     <string name="pref_api_base">API base URL</string>
-    <string name="pref_api_base_helper">Any OpenAI-compatible endpoint from models.dev</string>
+    <string name="pref_api_base_helper">OpenCode Zen is pre-configured with free models</string>
     <string name="pref_api_key">API key</string>
-    <string name="pref_api_key_helper">Get a free key from models.dev providers</string>
+    <string name="pref_api_key_helper">Optional for free models, required for paid ones (opencode.ai/zen)</string>
     <string name="pref_model">Model</string>
     <string name="pref_system_prompt">System prompt</string>
     <string name="pref_temperature">Temperature</string>

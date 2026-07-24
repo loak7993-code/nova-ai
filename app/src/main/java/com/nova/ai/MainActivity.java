@@ -233,7 +233,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateModelDisplay() {
         String model = Settings.get().model;
-        if (model == null || model.isEmpty()) model = "zhipuai/glm-5.2";
+        if (model == null || model.isEmpty()) model = "big-pickle";
         com.nova.ai.data.ModelInfo info = com.nova.ai.data.ModelRegistry.find(model);
         String version = BuildConfig.VERSION_NAME;
         if (toolbarSubtitle != null) toolbarSubtitle.setText("v" + version + "  ·  " + info.name);

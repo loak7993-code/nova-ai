@@ -13,7 +13,7 @@
 [![API: models.dev](https://img.shields.io/badge/API-models.dev-orange)](https://models.dev)
 [![Android 7.0+](https://img.shields.io/badge/Android-7.0%2B-green?logo=android)](https://developer.android.com)
 
-A fast, lightweight, open-source AI chat app for Android that connects to any OpenAI-compatible API from [models.dev](https://models.dev). No tracking. No ads. No telemetry. No proprietary SDKs.
+A fast, lightweight, open-source AI chat app for Android that connects to any OpenAI-compatible API. Works out of the box with [OpenCode Zen](https://opencode.ai/zen) free models — no API key required. No tracking. No ads. No telemetry. No proprietary SDKs.
 
 **Multi-model · Streaming · Tool calling · Image vision · Web search · Markdown**
 
@@ -24,7 +24,8 @@ A fast, lightweight, open-source AI chat app for Android that connects to any Op
 ## Features
 
 ### Chat
-- **Multi-model support** — switch between GLM-5.2, MiniMax M3, and Kimi K2.7 Code on the fly
+- **Multi-model support** — switch between Big Pickle, DeepSeek V4, MiMo V2.5, Nemotron 3 Ultra, North Mini Code, GLM 5.2, MiniMax M3, and Kimi K2.7 Code on the fly
+- **Free models work with no API key** — OpenCode Zen is pre-configured
 - **Streaming responses** — answers appear token by token as they generate
 - **Collapsible reasoning display** — see the model's thinking process with a tap
 - **Conversation history** — persistent chat storage, rename, delete, search
@@ -40,7 +41,7 @@ The AI can autonomously call tools to answer questions:
 
 ### Image Vision
 - Attach images from your gallery and ask questions about them
-- Supported models: **Kimi K2.7 Code**, **MiniMax M3**
+- Supported models: **Big Pickle**, **MiniMax M3**, **Kimi K2.7 Code**
 - Auto-prompts to switch to a vision-capable model if needed
 
 ### Web Search
@@ -99,26 +100,29 @@ The APK will be at `app/build/outputs/apk/release/app-release-unsigned.apk`.
 
 ## Setup Guide
 
-### 1. Pick a provider from models.dev
+### 1. Start chatting (no setup needed!)
 
-1. Go to [models.dev](https://models.dev)
-2. Find a model (e.g. GLM-5.2, MiniMax-M3, Kimi K2.7 Code)
-3. Pick a provider — filter for free ones ($0.00)
-4. Sign up and get an API key
-5. Note the provider's API base URL (e.g. `https://kenari.id/v1`)
+Nova AI comes pre-configured with [OpenCode Zen](https://opencode.ai/zen) free models. Just open the app and start chatting — no API key required.
 
-**Recommended free provider**: [Kenari](https://kenari.id) offers all 3 models for free.
+### 2. (Optional) Use a different provider
 
-### 2. Configure Nova AI
+Nova AI works with any OpenAI-compatible API:
+
+1. Go to [models.dev](https://models.dev) or [opencode.ai/zen](https://opencode.ai/zen)
+2. Find a model and provider
+3. Sign up and get an API key (if using paid models)
+4. Note the provider's API base URL
+
+### 3. Configure Nova AI
 
 1. Open Nova AI
 2. Tap the **☰ menu** → **Settings**
-3. Enter the **API base URL** from your provider
-4. Paste your **API key**
+3. Enter the **API base URL** from your provider (or keep OpenCode Zen default)
+4. Paste your **API key** (leave empty for free Zen models)
 5. (Optional) Change the **model**, **system prompt**, or **temperature**
 6. Tap **Save**
 
-### 3. (Optional) Enable Web Search
+### 4. (Optional) Enable Web Search
 
 Nova AI uses [SearXNG](https://searxng.org) — a privacy-respecting metasearch engine. You can self-host one or use a public instance.
 
@@ -144,13 +148,18 @@ Or find a public instance at [searx.space](https://searx.space) and use its URL.
 
 ## Supported Models
 
-| Model | ID | Vision | Description |
-|-------|----|--------|-------------|
-| GLM 5.2 | `zai-org/GLM-5.2` | No | Strong general reasoning, 40B-744B MoE |
-| MiniMax M3 | `MiniMaxAI/MiniMax-M3` | Yes | Coding, agentic, vision, 23B-428B MoE |
-| Kimi K2.7 Code | `moonshotai/Kimi-K2.7-Code` | Yes | Long-horizon agentic coding, vision, 32B-1T MoE |
+| Model | ID | Free? | Vision | Description |
+|-------|----|-------|--------|-------------|
+| Big Pickle | `big-pickle` | Yes | Yes | General-purpose, vision + reasoning + tools |
+| DeepSeek V4 Flash | `deepseek-v4-flash-free` | Yes | No | Fast reasoning + tools |
+| MiMo V2.5 | `mimo-v2.5-free` | Yes | No | Reasoning + tools |
+| Nemotron 3 Ultra | `nemotron-3-ultra-free` | Yes | No | Reasoning + tools |
+| North Mini Code | `north-mini-code-free` | Yes | No | Coding + reasoning + tools |
+| GLM 5.2 | `glm-5.2` | No | No | Strong general reasoning, 40B-744B MoE |
+| MiniMax M3 | `minimax-m3` | No | Yes | Coding, agentic, vision, 23B-428B MoE |
+| Kimi K2.7 Code | `kimi-k2.7-code` | No | Yes | Long-horizon agentic coding, vision, 32B-1T MoE |
 
-All models support **tool calling** and **reasoning/thinking** display.
+Free models run on [OpenCode Zen](https://opencode.ai/zen) with no API key. All models support **tool calling** and **reasoning/thinking** display.
 
 ---
 

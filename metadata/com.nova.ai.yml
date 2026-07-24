@@ -12,20 +12,22 @@ Summary: Privacy-focused AI chat client with tool calling and web search
 
 Description: |
     Nova AI is a privacy-focused Android AI chat client that supports multiple
-    LLM models via any OpenAI-compatible API from models.dev.
+    LLM models via OpenAI-compatible APIs, with OpenCode Zen free models
+    pre-configured out of the box.
 
     Features:
-    * Multi-model support: GLM-5.2, MiniMax M3, Kimi K2.7 Code
+    * Multi-model support: Big Pickle, DeepSeek V4, MiMo V2.5, Nemotron 3 Ultra, North Mini Code, GLM 5.2, MiniMax M3, Kimi K2.7 Code
+    * Free models work without an API key (OpenCode Zen)
     * Streaming responses with collapsible reasoning/thinking display
     * Tool calling: calculator, current time, and web search (SearXNG)
-    * Image vision support (Kimi K2.7 Code, MiniMax M3)
+    * Image vision support (Big Pickle, MiniMax M3, Kimi K2.7 Code)
     * Markdown rendering with tables, code blocks, lists, and headings
     * Conversation management with chat history persistence
     * Self-hosted SearXNG web search (no API key required)
     * No tracking, no telemetry, no ads, no proprietary SDKs
 
-    Users must provide their own API key from any models.dev provider.
-    Web search requires a self-hosted or public SearXNG instance URL.
+    Free models from OpenCode Zen work with no API key. Paid models require
+    a key from opencode.ai/zen. Web search requires a SearXNG instance URL.
 
 RepoType: git
 Repo: https://github.com/loak7993-code/nova-ai
@@ -36,12 +38,22 @@ Builds:
     commit: v2.0.1
     gradle:
       - yes
+  - versionName: '2.1'
+    versionCode: 15
+    commit: v2.1
+    gradle:
+      - yes
+  - versionName: '2.2'
+    versionCode: 16
+    commit: v2.2
+    gradle:
+      - yes
 
 MaintainerNotes: |
-    First release. All dependencies are FOSS (Apache 2.0).
+    All dependencies are FOSS (Apache 2.0).
     Geist font bundled under SIL Open Font License.
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: '2.0.1'
-CurrentVersionCode: 14
+CurrentVersion: '2.2'
+CurrentVersionCode: 16
