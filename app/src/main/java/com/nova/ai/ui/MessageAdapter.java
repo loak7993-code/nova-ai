@@ -13,8 +13,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -148,7 +146,6 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         boolean thinkingExpanded = false;
         ImageButton copy, regenerate, share;
         String currentRaw = "";
-        LinearLayout tableContainer;
 
         AiVH(View v) {
             super(v);
@@ -161,7 +158,6 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             thinkingSpinner = v.findViewById(R.id.thinkingSpinner);
             thinkingChevron = v.findViewById(R.id.thinkingChevron);
             thinkingHeader = v.findViewById(R.id.thinkingHeader);
-            tableContainer = v.findViewById(R.id.tableContainer);
             copy = v.findViewById(R.id.actionCopy);
             regenerate = v.findViewById(R.id.actionRegenerate);
             share = v.findViewById(R.id.actionShare);
@@ -183,22 +179,12 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 progress.setVisibility(View.VISIBLE);
                 actions.setVisibility(View.GONE);
                 thinkingSection.setVisibility(View.GONE);
-                tableContainer.setVisibility(View.GONE);
                 return;
             }
             progress.setVisibility(View.GONE);
 
-            tableContainer.removeAllViews();
-            tableContainer.setVisibility(View.GONE);
-
-            if (m.streaming || m.thinking) {
-                text.setText(MarkdownFormatter.format(currentRaw));
-                tableContainer.setVisibility(View.GONE);
-            } else if (hasTable(currentRaw)) {
-                renderWithTables(currentRaw);
-            } else {
-                text.setText(MarkdownFormatter.format(currentRaw));
-            }
+            text.setText(MarkdownFormatter.format(currentRaw));
+            text.setVisibility(View.VISIBLE);
 
             if (!reasoning.isEmpty()) {
                 thinkingSection.setVisibility(View.VISIBLE);
@@ -228,132 +214,6 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             }
         }
 
-        private boolean hasTable(String content) {
-            if (content == null || !content.contains("|")) return false;
-            String[] lines = content.split("\n");
-            for (int i = 0; i < lines.length - 1; i++) {
-                if (isTableRow(lines[i]) && isTableSeparator(lines[i + 1])) return true;
-            }
-            return false;
-        }
-
-        private boolean isTableRow(String line) {
-            return line != null && line.trim().startsWith("|");
-        }
-
-        private boolean isTableSeparator(String line) {
-            if (line == null) return false;
-            String t = line.trim();
-            if (!t.contains("|") || !t.contains("-")) return false;
-            return t.replaceAll("[|: \\-]", "").isEmpty();
-        }
-
-        private String[] parseRow(String line) {
-            String trimmed = line.trim();
-            if (trimmed.startsWith("|")) trimmed = trimmed.substring(1);
-            if (trimmed.endsWith("|")) trimmed = trimmed.substring(0, trimmed.length() - 1);
-            String[] parts = trimmed.split("\\|", -1);
-            for (int i = 0; i < parts.length; i++) parts[i] = parts[i].trim();
-            return parts;
-        }
-
-        private void renderWithTables(String content) {
-            String[] lines = content.split("\n", -1);
-            StringBuilder textPart = new StringBuilder();
-            tableContainer.setVisibility(View.VISIBLE);
-
-            int i = 0;
-            while (i < lines.length) {
-                if (i + 1 < lines.length && isTableRow(lines[i]) && isTableSeparator(lines[i + 1])) {
-                    if (textPart.length() > 0) {
-                        textPart.append("\n");
-                    }
-                    java.util.List<String[]> rows = new java.util.ArrayList<>();
-                    int j = i;
-                    while (j < lines.length && isTableRow(lines[j])) {
-                        rows.add(parseRow(lines[j]));
-                        j++;
-                    }
-                    buildTable(rows);
-                    textPart.setLength(0);
-                    i = j;
-                } else {
-                    if (textPart.length() > 0) textPart.append("\n");
-                    textPart.append(lines[i]);
-                    i++;
-                }
-            }
-
-            String tp = textPart.toString().trim();
-            if (tp.isEmpty()) {
-                text.setText("");
-                text.setVisibility(View.GONE);
-            } else {
-                text.setVisibility(View.VISIBLE);
-                text.setText(MarkdownFormatter.format(tp));
-            }
-        }
-
-        private void buildTable(java.util.List<String[]> rows) {
-            int cols = 0;
-            for (String[] r : rows) cols = Math.max(cols, r.length);
-
-            android.widget.TableLayout table = new android.widget.TableLayout(ctx);
-            table.setLayoutParams(new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT));
-            table.setShrinkAllColumns(true);
-            table.setStretchAllColumns(true);
-
-            for (int r = 0; r < rows.size(); r++) {
-                String[] cells = rows.get(r);
-                android.widget.TableRow row = new android.widget.TableRow(ctx);
-                row.setLayoutParams(new android.widget.TableRow.LayoutParams(
-                        android.widget.TableRow.LayoutParams.MATCH_PARENT,
-                        android.widget.TableRow.LayoutParams.WRAP_CONTENT));
-
-                boolean isHeader = (r == 0);
-                if (isHeader) {
-                    row.setBackgroundResource(R.drawable.bg_table_header);
-                }
-
-                for (int c = 0; c < cols; c++) {
-                    String cell = c < cells.length ? cells[c] : "";
-                    String display = cell.replaceAll("\\*\\*", "").replaceAll("\\*", "").replaceAll("`", "");
-                    TextView tv = new TextView(ctx);
-                    tv.setText(display);
-                    tv.setTextSize(isHeader ? 14f : 13f);
-                    tv.setTypeface(null, isHeader ? Typeface.BOLD : Typeface.NORMAL);
-                    tv.setTextColor(isHeader ? 0xFFEDE6E0 : 0xFF9B8F85);
-                    tv.setPadding(28, 20, 28, 20);
-                    tv.setMaxLines(10);
-                    tv.setSingleLine(false);
-                    row.addView(tv);
-                }
-                table.addView(row);
-
-                if (isHeader && r < rows.size() - 1) {
-                    View divider = new View(ctx);
-                    divider.setLayoutParams(new LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.MATCH_PARENT, 2));
-                    divider.setBackgroundColor(0xFF3A322C);
-                    tableContainer.addView(divider);
-                }
-            }
-
-            LinearLayout wrapper = new LinearLayout(ctx);
-            wrapper.setOrientation(LinearLayout.VERTICAL);
-            LinearLayout.LayoutParams wlp = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT);
-            wlp.bottomMargin = 16;
-            wlp.topMargin = 4;
-            wrapper.setLayoutParams(wlp);
-            wrapper.setBackgroundResource(R.drawable.bg_table_cell);
-            wrapper.addView(table);
-
-            tableContainer.addView(wrapper);
-        }
     }
 
     class ToolVH extends RecyclerView.ViewHolder {
@@ -446,7 +306,6 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             String reasoning = m.reasoning == null ? "" : m.reasoning;
             String content = m.content == null ? "" : m.content;
 
-            vh.tableContainer.setVisibility(View.GONE);
             if (content.isEmpty()) {
                 vh.text.setText("");
                 vh.text.setVisibility(View.GONE);
